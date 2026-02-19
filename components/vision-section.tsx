@@ -40,7 +40,7 @@ export function VisionSection() {
           marginTop: "-80px",
           paddingTop: "140px",
           paddingBottom: "100px",
-          borderRadius: "2.5rem 2.5rem 0 0",
+          borderRadius: "3.5rem 3.5rem 0 0",
         }}
       >
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
