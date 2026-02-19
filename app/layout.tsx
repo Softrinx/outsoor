@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: '%s | Outsoor',
   },
   description:
-    'Production-ready AI infrastructure with <200ms latency, 99.99% uptime, and transparent pricing. Built by developers, for developers. Ship AI features in minutes, not months.',
+    'Production ready AI infrastructure with <200ms latency, 99.99% uptime, and transparent pricing. Built by developers, for developers. Ship AI features in minutes, not months.',
   keywords: [
     'AI APIs',
     'Enterprise AI',
