@@ -29,8 +29,8 @@ export function ApiTokensMain({ user }: ApiTokensMainProps) {
           getUserTokens(),
           getUserIntegrations()
         ])
-        setTokens(tokensData)
-        setIntegrations(integrationsData)
+        setTokens(tokensData.data)
+        setIntegrations(integrationsData.data)
       } catch (error) {
         console.error('Error fetching data:', error)
       } finally {
