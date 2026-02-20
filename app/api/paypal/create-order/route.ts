@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createPayPalClient, isPayPalConfigured, createOrderRequest } from '@/lib/paypal-legacy'
 import { getCurrentUser } from '@/lib/auth'
-import { neon } from '@neondatabase/serverless'
 import { getAppUrl } from '@/lib/get-app-url'
-
-const sql = neon(process.env.DATABASE_URL!)
 
 export async function POST(request: NextRequest) {
   try {
+    const sql = getSql()
     // Check if PayPal is configured
     if (!isPayPalConfigured()) {
       return NextResponse.json(

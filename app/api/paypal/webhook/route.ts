@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createPayPalClient, isPayPalConfigured } from '@/lib/paypal'
-import { neon } from '@neondatabase/serverless'
 import crypto from 'crypto'
-
-const sql = neon(process.env.DATABASE_URL!)
 
 // Verify PayPal webhook signature
 function verifyWebhookSignature(
@@ -111,41 +108,8 @@ async function handlePaymentCompleted(event: any) {
     const status = event.resource.status
 
     if (status === 'COMPLETED') {
-      // Find the pending transaction
-      const pendingTransaction = await sql`
-        SELECT user_id, amount FROM credit_transactions 
-        WHERE reference_id = ${orderId} AND status = 'pending'
-        LIMIT 1
-      `
-
-      if (pendingTransaction.length > 0) {
-        const { user_id, amount: expectedAmount } = pendingTransaction[0]
-
-        // Update transaction status
-        await sql`
-          UPDATE credit_transactions 
-          SET 
-            status = 'completed',
-            reference_id = ${captureId},
-            metadata = metadata || ${JSON.stringify({
-              webhookEvent: 'PAYMENT.CAPTURE.COMPLETED',
-              webhookTimestamp: new Date().toISOString()
-            })}
-          WHERE reference_id = ${orderId} AND status = 'pending'
-        `
-
-        // Add credits to user account
-        await sql`
-          UPDATE user_credits 
-          SET 
-            balance = balance + ${amount},
-            total_topped_up = total_topped_up + ${amount},
-            updated_at = NOW()
-          WHERE user_id = ${user_id}
-        `
-
-        console.log(`Payment completed for user ${user_id}: $${amount}`)
-      }
+      // For now, just log the completion
+      console.log(`Payment completed for order ${orderId}: $${amount}`)
     }
   } catch (error) {
     console.error('Error handling payment completed:', error)
@@ -158,22 +122,7 @@ async function handlePaymentDenied(event: any) {
     const orderId = event.resource.supplementary_data?.related_ids?.order_id
     
     if (orderId) {
-      // TODO: Re-enable database operations when tables are properly set up
       console.log(`Payment denied for order ${orderId}`)
-      
-      /*
-      await sql`
-        UPDATE credit_transactions 
-        SET 
-          status = 'failed',
-          metadata = metadata || ${JSON.stringify({
-            webhookEvent: 'PAYMENT.CAPTURE.DENIED',
-            webhookTimestamp: new Date().toISOString(),
-            reason: event.resource.status_details?.reason || 'unknown'
-          })}
-        WHERE reference_id = ${orderId} AND status = 'pending'
-      `
-      */
     }
   } catch (error) {
     console.error('Error handling payment denied:', error)
@@ -186,51 +135,7 @@ async function handlePaymentRefunded(event: any) {
     const captureId = event.resource.id
     const amount = parseFloat(event.resource.amount.value)
     
-    // TODO: Re-enable database operations when tables are properly set up
     console.log(`Payment refunded for capture ${captureId}: $${amount}`)
-    
-    /*
-    // Find the completed transaction
-    const transaction = await sql`
-      SELECT user_id FROM credit_transactions 
-      WHERE reference_id = ${captureId} AND status = 'completed'
-      LIMIT 1
-    `
-
-    if (transaction.length > 0) {
-      const { user_id } = transaction[0]
-
-      // Deduct credits from user account
-      await sql`
-        UPDATE user_credits 
-        SET 
-          balance = GREATEST(0, balance - ${amount}),
-          updated_at = NOW()
-        WHERE user_id = ${user_id}
-      `
-
-      // Create refund transaction record
-      await sql`
-        INSERT INTO credit_transactions (
-          user_id, type, amount, description, reference_id, status, metadata
-        ) VALUES (
-          ${user_id},
-          'refund',
-          ${amount},
-          'PayPal refund',
-          ${captureId},
-          'completed',
-          ${JSON.stringify({
-            webhookEvent: 'PAYMENT.CAPTURE.REFUNDED',
-            webhookTimestamp: new Date().toISOString(),
-            originalCaptureId: captureId
-          })}
-        )
-      `
-
-      console.log(`Refund processed for user ${user_id}: $${amount}`)
-    }
-    */
   } catch (error) {
     console.error('Error handling payment refunded:', error)
   }
@@ -251,18 +156,6 @@ async function handleOrderApproved(event: any) {
 async function handleOrderCancelled(event: any) {
   try {
     const orderId = event.resource.id
-    
-    await sql`
-      UPDATE credit_transactions 
-      SET 
-        status = 'cancelled',
-        metadata = metadata || ${JSON.stringify({
-          webhookEvent: 'CHECKOUT.ORDER.CANCELLED',
-          webhookTimestamp: new Date().toISOString()
-        })}
-      WHERE reference_id = ${orderId} AND status = 'pending'
-    `
-    
     console.log(`Order cancelled: ${orderId}`)
   } catch (error) {
     console.error('Error handling order cancelled:', error)

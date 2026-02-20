@@ -69,7 +69,7 @@ export function HeroSection() {
     >
       <Header />
 
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 max-w-7xl mx-auto w-full px-6 lg:px-12 gap-8 lg:gap-16 items-center py-10 lg:py-0">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 max-w-7xl mx-auto w-full px-6 lg:px-12 gap-8 lg:gap-16 items-center pt-24 pb-10 lg:py-0">
 
         {/* Left — copy */}
         <motion.div
@@ -85,7 +85,7 @@ export function HeroSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
               style={{
                 color: "var(--color-text)",
-                fontSize: "clamp(2.5rem, 6vw, 5.5rem)",
+                fontSize: "clamp(1.9rem, 6vw, 5.5rem)",
                 fontWeight: 900,
                 lineHeight: 1,
                 letterSpacing: "-0.04em",
