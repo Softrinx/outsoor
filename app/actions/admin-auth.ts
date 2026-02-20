@@ -1,52 +1,53 @@
 "use server"
 
-import { sql } from "@/lib/db"
-import { createSession, setSessionCookie, hashPassword } from "@/lib/auth"
+import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
+
+// List of admin emails - update this to add more admins
+const ADMIN_EMAILS = ["admin@outsoor.com"]
 
 export async function adminLogin(prevState: any, formData: FormData) {
   const email = formData.get("email") as string
   const password = formData.get("password") as string
 
-  // Hardcoded Admin Credentials
-  const ADMIN_EMAIL = "admin@outsoor.com"
-  const ADMIN_PASSWORD = "admin"
+  if (!email || !password) {
+    return { error: "Email and password are required" }
+  }
 
-  if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+  // Check if email is in admin list
+  if (!ADMIN_EMAILS.includes(email.toLowerCase())) {
     return { error: "Invalid admin credentials" }
   }
 
   try {
-    // Check if admin user exists in DB
-    const existingUsers = await sql`SELECT * FROM users WHERE email = ${ADMIN_EMAIL}`
-    
-    let userId: string
+    const supabase = await createClient()
 
-    if (existingUsers.length === 0) {
-      // Create admin user if doesn't exist
-      const hashedPassword = await hashPassword(ADMIN_PASSWORD)
-      const newUser = await sql`
-        INSERT INTO users (email, password_hash, name, role)
-        VALUES (${ADMIN_EMAIL}, ${hashedPassword}, 'Super Admin', 'admin')
-        RETURNING id
-      `
-      userId = newUser[0].id
-    } else {
-      userId = existingUsers[0].id
-      // Ensure role is admin
-      if (existingUsers[0].role !== 'admin') {
-        await sql`UPDATE users SET role = 'admin' WHERE id = ${userId}`
-      }
+    // Sign in with Supabase auth
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    if (error) {
+      console.error("Admin login error:", error)
+      return { error: error.message || "Invalid credentials" }
     }
 
-    // Create Session
-    const token = await createSession(userId)
-    await setSessionCookie(token)
+    if (!data.user) {
+      return { error: "Login failed. Please try again." }
+    }
 
+    // Verify user is admin by checking if email is in admin list
+    if (!ADMIN_EMAILS.includes(data.user.email?.toLowerCase() || "")) {
+      // Sign out if not admin
+      await supabase.auth.signOut()
+      return { error: "You do not have admin access" }
+    }
+
+    // Successfully logged in as admin
+    redirect("/admin")
   } catch (error) {
     console.error("Admin login error:", error)
     return { error: "An unexpected error occurred" }
   }
-
-  redirect("/admin")
 }

@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { login } from "@/app/actions/auth"
+// import { login } from "@/app/actions/auth"
 import { Loader2, Mail, Lock, Eye, EyeOff } from "lucide-react"
+import { createClient } from "@/lib/supabase/client"
 import Link from "next/link"
 
 export function LoginForm() {
@@ -14,6 +15,7 @@ export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
+  const supabase = createClient()
 
   // Fallback timeout to prevent infinite loading
   useEffect(() => {
@@ -36,12 +38,15 @@ export function LoginForm() {
 
     try {
       console.log("Calling login action...")
-      const result = await login(formData)
+      const result = await supabase.auth.signInWithPassword({
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
+      })
       console.log("Login result:", result)
 
       if (result.error) {
         console.log("Login failed with error:", result.error)
-        setError(result.error)
+        setError(result.error.message)
         setIsLoading(false)
       } else {
         console.log("Login successful, redirecting...")

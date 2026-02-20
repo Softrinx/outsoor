@@ -50,7 +50,7 @@ jobs:
         run: npm ci
 
       - name: Lint frontend
-        run: npm run lint -- --dir app --dir components --dir contexts --dir hooks
+        run: npx eslint app components contexts hooks
 
   frontend_build:
     name: Frontend Build
@@ -103,7 +103,7 @@ jobs:
         run: npx tsc --noEmit
 
       - name: Lint backend
-        run: npm run lint -- --dir app/api --dir app/actions --dir lib
+        run: npx eslint app/api app/actions lib
 
   backend_build:
     name: Backend Build
@@ -129,7 +129,7 @@ jobs:
     name: Deploy Staging
     runs-on: ubuntu-latest
     needs: [frontend_build, backend_build]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: false # Temporarily disabled: missing Vercel token/org/project secrets
     environment:
       name: staging
       url: ${{ vars.STAGING_APP_URL || '' }}

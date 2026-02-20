@@ -5,14 +5,17 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { signup } from "@/app/actions/auth"
+// import { signup } from "@/app/actions/auth"
 import { Loader2, User, Mail, Lock, Eye, EyeOff, Shield } from "lucide-react"
+import { createClient } from "@/lib/supabase/client"
 
 export function SignupForm() {
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
+
+  const supabase = createClient()
 
   // Fallback timeout to prevent infinite loading
   useEffect(() => {
@@ -35,12 +38,20 @@ export function SignupForm() {
 
     try {
       console.log("Calling signup action...")
-      const result = await signup(formData)
+      const result = await supabase.auth.signUp({
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
+        options: {
+          data: {
+            name: formData.get("name") as string,
+          },
+        },
+      })
       console.log("Signup result:", result)
 
       if (result.error) {
         console.log("Signup failed with error:", result.error)
-        setError(result.error)
+        setError(result.error.message)
         setIsLoading(false)
       } else {
         console.log("Signup successful, redirecting...")
