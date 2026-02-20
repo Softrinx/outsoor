@@ -5,8 +5,45 @@ import { OutsoorLogo } from "@/components/outsoor-logo"
 import Link from "next/link"
 import { Brain, Zap, Shield, Globe, Code, Sparkles, Sun, Moon, Check } from "lucide-react"
 import { useTheme } from "@/contexts/themeContext"
+import { useEffect, useRef, useState } from "react"
+import { motion } from "framer-motion"
 
 export const dynamic = 'force-dynamic'
+
+function LottieAnimation() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    let anim: any
+    let cancelled = false
+    import("lottie-web").then((lottie) => {
+      if (cancelled || !containerRef.current) return
+      anim = lottie.default.loadAnimation({
+        container: containerRef.current,
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "/animations/hero-animation.json",
+      })
+      anim.addEventListener("DOMLoaded", () => { if (!cancelled) setLoaded(true) })
+    })
+    return () => { cancelled = true; anim?.destroy() }
+  }, [])
+
+  return (
+    <div className="relative w-full h-full flex items-center justify-center">
+      {!loaded && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full border-2 animate-spin"
+            style={{ borderColor: "var(--color-border)", borderTopColor: "var(--color-primary)" }} />
+        </div>
+      )}
+      <div ref={containerRef} className="w-full h-full"
+        style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.4s ease" }} />
+    </div>
+  )
+}
 
 export default function SignupPage() {
   const { isDark, setMode } = useTheme()
@@ -19,12 +56,12 @@ export default function SignupPage() {
   const subtle = isDark ? "#5A5A64" : "#a1a1aa"
 
   const apiModels = [
-    { name: "GPT-4 Turbo",       description: "Enhanced reasoning & vision",      icon: Brain,    color: "#6366f1" },
-    { name: "Claude 3.5 Sonnet", description: "Anthropic's most capable model",   icon: Sparkles, color: "#8b5cf6" },
-    { name: "Gemini Pro",        description: "Google's advanced AI model",        icon: Zap,      color: "#f59e0b" },
-    { name: "Llama 3.1 405B",   description: "Meta's open-source powerhouse",     icon: Code,     color: "#10b981" },
-    { name: "DALL-E 3",          description: "Text-to-image generation",          icon: Globe,    color: "#ec4899" },
-    { name: "Whisper v3",        description: "Audio transcription & translation", icon: Shield,   color: "#06b6d4" },
+    { name: "GPT-4 Turbo",       icon: Brain,    color: "#6366f1" },
+    { name: "Claude 3.5 Sonnet", icon: Sparkles, color: "#8b5cf6" },
+    { name: "Gemini Pro",        icon: Zap,      color: "#f59e0b" },
+    { name: "Llama 3.1 405B",   icon: Code,     color: "#10b981" },
+    { name: "DALL-E 3",          icon: Globe,    color: "#ec4899" },
+    { name: "Whisper v3",        icon: Shield,   color: "#06b6d4" },
   ]
 
   const perks = [
@@ -34,15 +71,8 @@ export default function SignupPage() {
     "Cancel or upgrade anytime",
   ]
 
-  const testimonial = {
-    quote: "We switched from managing 6 separate AI vendor contracts to just Outsoor. The ROI was immediate.",
-    author: "Marcus Reid",
-    role: "Head of Engineering at Loopflow",
-  }
-
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ background: bg }}>
-      {/* Light mode input override */}
       {!isDark && (
         <style>{`
           input, textarea, select {
@@ -50,34 +80,29 @@ export default function SignupPage() {
             color: #0a0a0b !important;
             border-color: #e2e2e0 !important;
           }
-          input::placeholder, textarea::placeholder {
-            color: #a1a1aa !important;
-          }
-          label, [class*="label"] {
-            color: #0a0a0b !important;
-          }
-          [class*="form"] p, [class*="form"] span {
-            color: #52525b !important;
-          }
+          input::placeholder, textarea::placeholder { color: #a1a1aa !important; }
+          label { color: #0a0a0b !important; }
         `}</style>
       )}
-
-      <div className="absolute inset-0 pointer-events-none" style={{
-        background: isDark
-          ? "radial-gradient(ellipse at 20% 50%, rgba(99,102,241,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.06) 0%, transparent 50%)"
-          : "radial-gradient(ellipse at 20% 50%, rgba(99,102,241,0.04) 0%, transparent 60%)",
-      }} />
 
       {/* ── MOBILE ── */}
       <div className="lg:hidden relative z-10 min-h-screen flex flex-col">
         <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: `1px solid ${border}` }}>
           <Link href="/"><OutsoorLogo className="h-8 w-auto" /></Link>
           <div className="flex items-center gap-3">
-            <button onClick={() => setMode(isDark ? "light" : "dark")}
+            <motion.button
+              onClick={() => setMode(isDark ? "light" : "dark")}
+              whileTap={{ scale: 0.9 }}
               className="w-9 h-9 flex items-center justify-center"
-              style={{ border: `1px solid ${border}`, background: card }}>
-              {isDark ? <Sun className="w-4 h-4" style={{ color: muted }} /> : <Moon className="w-4 h-4" style={{ color: muted }} />}
-            </button>
+              style={{ border: `1px solid var(--color-primary)`, background: "color-mix(in srgb, var(--color-primary) 10%, transparent)" }}>
+              <motion.div
+                key={isDark ? "sun" : "moon"}
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                transition={{ duration: 0.25 }}>
+                {isDark ? <Sun className="w-4 h-4" style={{ color: "var(--color-primary)" }} /> : <Moon className="w-4 h-4" style={{ color: "var(--color-primary)" }} />}
+              </motion.div>
+            </motion.button>
             <Link href="/login" className="text-xs font-semibold px-3 py-2"
               style={{ border: `1px solid var(--color-primary)`, color: "var(--color-primary)" }}>
               Sign in
@@ -87,9 +112,9 @@ export default function SignupPage() {
 
         <div className="grid grid-cols-3 gap-px" style={{ background: border, borderBottom: `1px solid ${border}` }}>
           {[
-            { n: "50+",  l: "AI Models",   color: "var(--color-primary)" },
-            { n: "10K",  l: "Free calls",  color: "#10b981" },
-            { n: "Free", l: "To start",    color: "#f59e0b" },
+            { n: "50+",  l: "AI Models",  color: "var(--color-primary)" },
+            { n: "10K",  l: "Free calls", color: "#10b981" },
+            { n: "Free", l: "To start",   color: "#f59e0b" },
           ].map(s => (
             <div key={s.l} className="flex flex-col items-center py-4" style={{ background: bg }}>
               <span className="font-black font-mono text-xl" style={{ color: s.color, letterSpacing: "-0.04em" }}>{s.n}</span>
@@ -135,12 +160,27 @@ export default function SignupPage() {
 
       {/* ── DESKTOP ── */}
       <div className="hidden lg:block relative z-10 min-h-screen">
+
         <div className="absolute top-5 right-6 z-20">
-          <button onClick={() => setMode(isDark ? "light" : "dark")}
-            className="w-9 h-9 flex items-center justify-center"
-            style={{ border: `1px solid ${border}`, background: card }}>
-            {isDark ? <Sun className="w-4 h-4" style={{ color: muted }} /> : <Moon className="w-4 h-4" style={{ color: muted }} />}
-          </button>
+          <motion.button
+            onClick={() => setMode(isDark ? "light" : "dark")}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.92 }}
+            className="flex items-center gap-2 px-3 py-2 text-xs font-semibold"
+            style={{
+              border: `1px solid var(--color-primary)`,
+              background: "color-mix(in srgb, var(--color-primary) 10%, transparent)",
+              color: "var(--color-primary)",
+            }}>
+            <motion.div
+              key={isDark ? "sun" : "moon"}
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              transition={{ duration: 0.25 }}>
+              {isDark ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+            </motion.div>
+            {isDark ? "Light mode" : "Dark mode"}
+          </motion.button>
         </div>
 
         <div className="min-h-screen flex items-center justify-center p-4">
@@ -151,7 +191,7 @@ export default function SignupPage() {
               <div className="space-y-8">
                 <Link href="/"><OutsoorLogo className="h-10 w-auto" /></Link>
 
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <h1 className="text-5xl font-black leading-tight" style={{ letterSpacing: "-0.04em", color: text }}>
                     Build the future.<br />
                     <span style={{ color: "var(--color-primary)" }}>Start for free.</span>
@@ -159,6 +199,25 @@ export default function SignupPage() {
                   <p className="text-base leading-relaxed max-w-sm" style={{ color: muted }}>
                     Join thousands of developers using 50+ AI models through one unified API. No vendor lock-in, transparent pricing.
                   </p>
+                </div>
+
+                {/* Lottie */}
+                <div style={{ height: 220, width: "100%" }}>
+                  <LottieAnimation />
+                </div>
+
+                {/* Model pills */}
+                <div className="space-y-2">
+                  <p className="text-xs font-mono uppercase tracking-widest" style={{ color: muted, opacity: 0.55 }}>Available models</p>
+                  <div className="flex flex-wrap gap-2">
+                    {apiModels.map((m) => (
+                      <div key={m.name} className="flex items-center gap-2 px-3 py-1.5"
+                        style={{ background: `${m.color}14`, border: `1px solid ${m.color}30` }}>
+                        <m.icon className="w-3.5 h-3.5" style={{ color: m.color }} />
+                        <span className="text-xs font-medium" style={{ color: text }}>{m.name}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Perks */}
@@ -174,34 +233,13 @@ export default function SignupPage() {
                   ))}
                 </div>
 
-                {/* Model grid — 3 cols */}
-                <div className="space-y-2">
-                  <p className="text-xs font-mono uppercase tracking-widest" style={{ color: muted, opacity: 0.6 }}>Available models</p>
-                  <div className="grid grid-cols-3 gap-px" style={{ background: border, border: `1px solid ${border}` }}>
-                    {apiModels.map((model) => (
-                      <div key={model.name} className="flex flex-col gap-2 p-4" style={{ background: card }}>
-                        <div className="w-8 h-8 flex items-center justify-center"
-                          style={{ background: `${model.color}18`, border: `1px solid ${model.color}30` }}>
-                          <model.icon className="w-4 h-4" style={{ color: model.color }} />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold" style={{ color: text }}>{model.name}</div>
-                          <div className="text-xs mt-0.5" style={{ color: muted, opacity: 0.7 }}>{model.description}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-              
-
                 {/* Stats */}
                 <div className="grid grid-cols-4 gap-px" style={{ background: border, border: `1px solid ${border}` }}>
                   {[
-                    { n: "50+",    l: "AI Models",    color: "var(--color-primary)" },
-                    { n: "10K",    l: "Free calls",   color: "#10b981" },
-                    { n: "<200ms", l: "Latency",      color: "#06b6d4" },
-                    { n: "99.99%", l: "Uptime",       color: "#10b981" },
+                    { n: "50+",  l: "AI Models",  color: "var(--color-primary)" },
+                    { n: "10K",  l: "Free calls", color: "#10b981" },
+                    { n: "<200ms", l: "Latency",  color: "#06b6d4" },
+                    { n: "99.99%", l: "Uptime",   color: "#10b981" },
                   ].map(s => (
                     <div key={s.l} className="flex flex-col items-center py-4" style={{ background: card }}>
                       <div className="text-lg font-black font-mono" style={{ color: s.color, letterSpacing: "-0.04em" }}>{s.n}</div>
