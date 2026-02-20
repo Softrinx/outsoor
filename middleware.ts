@@ -1,14 +1,19 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { createMiddlewareClient } from "@/lib/supabase/middleware"
+import { hasSupabaseEnv } from "@/lib/supabase/env"
 
 // List of admin emails - must match the one in admin-login-form.tsx and admin-auth.ts
 const ADMIN_EMAILS = ["admin@outsoor.com"]
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
+  const response = NextResponse.next({
     request,
   })
+
+  if (!hasSupabaseEnv()) {
+    return response
+  }
 
   const supabase = createMiddlewareClient(request, response)
 
