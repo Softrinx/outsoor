@@ -26,8 +26,9 @@ export function ForgotPasswordForm() {
     } else {
       setSuccess(result.message || "Reset link sent successfully!")
       // For testing purposes - remove in production
-      if (result.resetToken) {
-        setResetToken(result.resetToken)
+      const maybeResetToken = (result as { resetToken?: string }).resetToken
+      if (typeof maybeResetToken === "string") {
+        setResetToken(maybeResetToken)
       }
     }
 

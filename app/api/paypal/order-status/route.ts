@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createPayPalClient, isPayPalConfigured } from '@/lib/paypal-legacy'
+import { createPayPalClient, isPayPalConfigured, createGetOrderRequest } from '@/lib/paypal-legacy'
 import { getCurrentUser } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
   try {
-    const sql = getSql()
     // Check if PayPal is configured
     if (!isPayPalConfigured()) {
       return NextResponse.json(
@@ -87,8 +86,8 @@ export async function GET(request: NextRequest) {
     // If no transaction found, check PayPal directly
     try {
       const paypalClient = createPayPalClient()
-      const request = new paypal.orders.OrdersGetRequest(orderId)
-      const order = await paypalClient.execute(request)
+      const orderRequest = createGetOrderRequest(orderId)
+      const order = await paypalClient.execute(orderRequest)
       
       return NextResponse.json({
         success: true,

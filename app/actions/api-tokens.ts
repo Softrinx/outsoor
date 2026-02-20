@@ -168,6 +168,10 @@ export async function verifyApiToken(token: string) {
       id: "token_1",
       user_id: "user_123",
       token: token,
+      name: "Default API Token",
+      email: "user@example.com",
+      user_name: "User",
+      last_used_at: new Date().toISOString(),
     }
   }
   return null

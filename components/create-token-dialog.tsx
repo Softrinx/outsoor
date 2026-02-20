@@ -25,7 +25,7 @@ export function CreateTokenDialog() {
     setIsCreating(true)
     try {
       const result = await createApiToken(formData)
-      if (result.success) {
+      if (result.success && typeof result.token === "string") {
         setNewToken(result.token)
       }
     } catch (error) {

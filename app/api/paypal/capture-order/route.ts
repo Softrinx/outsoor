@@ -4,7 +4,6 @@ import { getCurrentUser } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
-    const sql = getSql()
     // Check if PayPal is configured
     if (!isPayPalConfigured()) {
       return NextResponse.json(

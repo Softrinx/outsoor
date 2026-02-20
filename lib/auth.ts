@@ -7,7 +7,8 @@ const ADMIN_EMAILS = ["admin@outsoor.com"]
 // User type
 export type User = {
   id: string
-  email: string | undefined
+  email: string
+  name: string | null
   user_metadata?: Record<string, any>
 }
 
@@ -22,7 +23,11 @@ export async function requireAuth(): Promise<User> {
 
   return {
     id: data.user.id,
-    email: data.user.email,
+    email: data.user.email ?? "",
+    name:
+      (data.user.user_metadata?.name as string | undefined) ??
+      (data.user.user_metadata?.full_name as string | undefined) ??
+      null,
     user_metadata: data.user.user_metadata,
   }
 }
@@ -38,7 +43,11 @@ export async function getCurrentUser(): Promise<User | null> {
 
   return {
     id: data.user.id,
-    email: data.user.email,
+    email: data.user.email ?? "",
+    name:
+      (data.user.user_metadata?.name as string | undefined) ??
+      (data.user.user_metadata?.full_name as string | undefined) ??
+      null,
     user_metadata: data.user.user_metadata,
   }
 }

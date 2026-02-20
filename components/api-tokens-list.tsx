@@ -57,10 +57,13 @@ export function ApiTokensList({ tokens }: ApiTokensListProps) {
   const handleRegenerate = async (tokenId: number) => {
     setRegeneratingTokens((prev) => new Set(prev).add(tokenId))
     try {
-      const result = await regenerateToken(tokenId)
+      const formData = new FormData()
+      formData.append("tokenId", String(tokenId))
+      const result = await regenerateToken(formData)
       if (result.success) {
         // Show the new token temporarily
-        alert(`New token generated: ${result.token}\n\nPlease copy it now, you won't see it again!`)
+        const newToken = "token" in result ? result.token : ""
+        alert(`New token generated: ${newToken}\n\nPlease copy it now, you won't see it again!`)
       }
     } catch (error) {
       console.error("Failed to regenerate token:", error)
@@ -77,7 +80,9 @@ export function ApiTokensList({ tokens }: ApiTokensListProps) {
   const handleDelete = async (tokenId: number) => {
     if (confirm("Are you sure you want to delete this token? This action cannot be undone.")) {
       try {
-        await deleteToken(tokenId)
+        const formData = new FormData()
+        formData.append("tokenId", String(tokenId))
+        await deleteToken(formData)
       } catch (error) {
         console.error("Failed to delete token:", error)
         alert("Failed to delete token")
