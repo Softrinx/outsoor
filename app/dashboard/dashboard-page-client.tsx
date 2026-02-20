@@ -12,9 +12,10 @@ import { ModelsMain } from "@/components/models-main"
 import { ModelsDocsIndex } from "@/components/models-docs-index"
 import { ModelDocsPage } from "@/components/model-docs-page"
 import { usePathname } from "next/navigation"
+import type { User } from "@/lib/auth"
 
 interface DashboardPageClientProps {
-  user: { name: string; email: string }
+  user: User
 }
 
 export function DashboardPageClient({ user }: DashboardPageClientProps) {

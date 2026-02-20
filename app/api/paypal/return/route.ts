@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createPayPalClient, isPayPalConfigured } from '@/lib/paypal-legacy'
 import { getCurrentUser } from '@/lib/auth'
-import { neon } from '@neondatabase/serverless'
 import { createTopUp } from '@/app/actions/billing'
 import { getAppUrl } from '@/lib/get-app-url'
-
-const sql = neon(process.env.DATABASE_URL!)
 
 export async function GET(request: NextRequest) {
   try {
