@@ -23,7 +23,6 @@ const sections = [
       { name: "API Reference",  href: "/reference" },
       { name: "Tutorials",      href: "/tutorials" },
       { name: "Changelog",      href: "/changelog" },
-      { name: "Status",         href: "/status" },
     ],
   },
   {
