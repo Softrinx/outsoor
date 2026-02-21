@@ -1,217 +1,239 @@
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Search, Star, Users, ExternalLink } from "lucide-react"
+"use client"
+
+import { useState } from "react"
+import { Search, Star, Users, ExternalLink, Zap, TrendingUp } from "lucide-react"
+import { useTheme } from "@/contexts/themeContext"
 import type { DashboardUser } from "@/types/dashboard-user"
 
 interface DashboardMainProps {
   user: DashboardUser
 }
 
+const categories = [
+  "All", "Social media", "AI", "Agents", "Lead generation",
+  "E-commerce", "SEO tools", "Jobs", "MCP servers", "News",
+  "Real estate", "Developer tools", "Travel", "Automation",
+]
+
+const apiServices = [
+  { title: "Website Content Crawler", description: "Crawl websites and extract text content to feed AI models, LLM applications, vector databases, or RAG pipelines.", provider: "Apify", icon: "🌐", users: "69K", rating: 4.4, color: "#f97316", tag: "Popular" },
+  { title: "Apollo Scraper", description: "Scrape up to 50,000 leads per search URL. Perfect for sales teams and lead generation workflows.", provider: "Code Pioneer", icon: "⚡", users: "58K", rating: 4.1, color: "#eab308", tag: "Trending" },
+  { title: "TikTok Scraper", description: "Extract data from TikTok videos, hashtags, and users. Use URLs or search terms to scrape profiles and posts.", provider: "Clockworks", icon: "🎵", users: "60K", rating: 4.5, color: "#ec4899", tag: "Hot" },
+  { title: "Google Maps Scraper", description: "Extract data from thousands of Google Maps locations including reviews, contact info, opening hours, and images.", provider: "Compass", icon: "🗺️", users: "148K", rating: 4.1, color: "#10b981", tag: "Top rated" },
+  { title: "Instagram Scraper", description: "Scrape Instagram posts, profiles, hashtags, photos, and comments using one or more Instagram URLs.", provider: "Apify", icon: "📸", users: "123K", rating: 4.1, color: "#8b5cf6", tag: "Popular" },
+  { title: "LinkedIn Scraper", description: "Extract LinkedIn profiles, job listings, company data, and connections at scale for recruitment and sales.", provider: "DataMiner", icon: "💼", users: "94K", rating: 4.3, color: "#0ea5e9", tag: "New" },
+]
+
 export function DashboardMain({ user }: DashboardMainProps) {
-  const categories = [
-    "Social media",
-    "AI",
-    "Agents",
-    "Lead generation",
-    "E-commerce",
-    "SEO tools",
-    "Jobs",
-    "MCP servers",
-    "News",
-    "Real estate",
-    "Developer tools",
-    "Travel",
-    "Videos",
-    "Automation",
-  ]
+  const { isDark } = useTheme()
+  const [activeCategory, setActiveCategory] = useState("All")
+  const [search, setSearch] = useState("")
 
-  const subCategories = ["Integrations", "Open source", "Other"]
+  const bg     = isDark ? "var(--color-bg)"        : "#f8f8f6"
+  const card   = isDark ? "var(--color-surface-1)" : "#ffffff"
+  const border = isDark ? "var(--color-border)"    : "#e2e2e0"
+  const text   = isDark ? "var(--color-text)"      : "#0a0a0b"
+  const muted  = isDark ? "#71717a"                : "#71717a"
+  const subtle = isDark ? "#52525b"                : "#a1a1aa"
 
-  const apiServices = [
-    {
-      title: "Website Content Crawler",
-      description:
-        "Crawl websites and extract text content to feed AI models, LLM applications, vector databases, or RAG pipelines. The Actor supports rich formatting using...",
-      provider: "Apify",
-      icon: "🌐",
-      users: "69K",
-      rating: 4.4,
-      color: "from-orange-500 to-red-500",
-    },
-    {
-      title: "Apollo Scraper - Scrape upto 50K Leads",
-      description: "Scrape up to 50,000 leads per search URL.",
-      provider: "Code Pioneer",
-      icon: "⚡",
-      users: "58K",
-      rating: 4.1,
-      color: "from-yellow-500 to-orange-500",
-    },
-    {
-      title: "TikTok Scraper",
-      description:
-        "Extract data from TikTok videos, hashtags, and users. Use URLs or search terms to scrape TikTok profiles, hashtags, posts, URLs, shares, followers, hearts...",
-      provider: "Clockworks",
-      icon: "🎵",
-      users: "60K",
-      rating: 4.5,
-      color: "from-pink-500 to-purple-500",
-    },
-    {
-      title: "Google Maps Scraper",
-      description:
-        "Extract data from thousands of Google Maps locations and businesses, including reviews, reviewer details, images, contact info, opening hours, location, prices...",
-      provider: "Compass",
-      icon: "🗺️",
-      users: "148K",
-      rating: 4.1,
-      color: "from-blue-500 to-green-500",
-    },
-    {
-      title: "Instagram Scraper",
-      description:
-        "Scrape and download Instagram posts, profiles, places, hashtags, photos, and comments. Get data from Instagram using one or more Instagram URLs or...",
-      provider: "Apify",
-      icon: "📸",
-      users: "123K",
-      rating: 4.1,
-      color: "from-purple-500 to-pink-500",
-    },
-    {
-      title: "Skip Trace",
-      description:
-        "Locate hard-to-find individuals with our powerful skip trace/tracking API. Truefinderpeoplesearch, Lead Finder, Truthfinder, Spokeo,...",
-      provider: "ONE API",
-      icon: "🔍",
-      users: "712",
-      rating: 2.0,
-      color: "from-indigo-500 to-blue-500",
-    },
-  ]
+  const filtered = apiServices.filter(s =>
+    (activeCategory === "All" || s.tag === activeCategory || s.provider === activeCategory) &&
+    (search === "" || s.title.toLowerCase().includes(search.toLowerCase()) || s.description.toLowerCase().includes(search.toLowerCase()))
+  )
 
   return (
-    <div className="flex-1 flex flex-col">
-      {/* Header */}
-      <header className="p-6 border-b border-white/10">
-        <div className="flex items-center justify-center mb-6">
-          <h1 className="text-3xl font-bold text-white">API Store</h1>
-        </div>
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", background: bg, minHeight: "100svh" }}>
 
-        {/* Search Bar */}
-        <div className="max-w-md mx-auto relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <Input
-            placeholder="Search for APIs"
-            className="pl-12 bg-gray-800/50 border-gray-700 text-white placeholder-gray-400 h-12"
-          />
-        </div>
-      </header>
+      {!isDark && (
+        <style>{`
+          input, textarea, select {
+            background-color: #ffffff !important;
+            color: #0a0a0b !important;
+            border-color: #e2e2e0 !important;
+          }
+          input::placeholder { color: #a1a1aa !important; }
+        `}</style>
+      )}
 
-      {/* Categories */}
-      <div className="p-6 border-b border-white/10">
-        <div className="flex flex-wrap gap-2 mb-4">
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant="ghost"
-              size="sm"
-              className="text-gray-300 hover:text-white hover:bg-white/10"
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
-        <div className="flex gap-2">
-          {subCategories.map((category) => (
-            <Button
-              key={category}
-              variant="ghost"
-              size="sm"
-              className="text-gray-400 hover:text-white hover:bg-white/10"
-            >
-              {category}
-            </Button>
-          ))}
+      {/* ── HEADER ── */}
+      <div style={{ padding: "32px 32px 0", borderBottom: `1px solid ${border}`, background: card }}>
+        <div style={{ maxWidth: 800, margin: "0 auto" }}>
+          <div className="flex flex-col items-center gap-4 pb-6">
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex items-center gap-2">
+                <Zap className="w-5 h-5" style={{ color: "var(--color-primary)" }} />
+                <span className="text-xs font-mono uppercase tracking-widest" style={{ color: "var(--color-primary)" }}>API Store</span>
+              </div>
+              <h1 className="text-3xl font-black text-center" style={{ color: text, letterSpacing: "-0.04em" }}>
+                6,000+ pre-built APIs
+              </h1>
+              <p className="text-sm text-center" style={{ color: muted }}>
+                Web scraping, automation, data extraction — plug in and go.
+              </p>
+            </div>
+
+            {/* Search */}
+            <div style={{ position: "relative", width: "100%", maxWidth: 480 }}>
+              <Search className="w-4 h-4" style={{
+                position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: muted, pointerEvents: "none",
+              }} />
+              <input
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search APIs, tools, providers…"
+                style={{
+                  width: "100%", paddingLeft: 40, paddingRight: 16, height: 44,
+                  background: isDark ? "rgba(255,255,255,0.04)" : "#f0f0ee",
+                  border: `1px solid ${border}`, borderRadius: 10,
+                  color: text, fontSize: 14, outline: "none",
+                }}
+                onFocus={e => e.currentTarget.style.borderColor = "var(--color-primary)"}
+                onBlur={e => e.currentTarget.style.borderColor = border}
+              />
+            </div>
+          </div>
+
+          {/* Category tabs */}
+          <div style={{ display: "flex", overflowX: "auto", gap: 0, marginBottom: -1 }}>
+            {categories.map(c => (
+              <button key={c}
+                onClick={() => setActiveCategory(c)}
+                style={{
+                  padding: "10px 16px", fontSize: 13, fontWeight: 600, whiteSpace: "nowrap",
+                  color: activeCategory === c ? "var(--color-primary)" : muted,
+                  background: "transparent", border: "none", cursor: "pointer",
+                  borderBottom: `2px solid ${activeCategory === c ? "var(--color-primary)" : "transparent"}`,
+                  transition: "all 0.15s",
+                }}
+                onMouseEnter={e => { if (activeCategory !== c) e.currentTarget.style.color = text }}
+                onMouseLeave={e => { if (activeCategory !== c) e.currentTarget.style.color = muted }}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <main className="flex-1 p-6">
+      {/* ── MAIN CONTENT ── */}
+      <div style={{ flex: 1, padding: "28px 32px", maxWidth: 1280, width: "100%", margin: "0 auto", boxSizing: "border-box" }}>
+
+        {/* Section heading */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-white mb-2">All APIs</h2>
-            <p className="text-gray-400">
-              Explore 6,000+ pre-built APIs for your web scraping and automation projects.
+            <h2 className="text-lg font-black" style={{ color: text, letterSpacing: "-0.03em" }}>
+              {activeCategory === "All" ? "All APIs" : activeCategory}
+            </h2>
+            <p className="text-xs mt-0.5" style={{ color: muted }}>
+              {filtered.length} results{search ? ` for "${search}"` : ""}
             </p>
           </div>
-          <Button variant="ghost" className="text-primary hover:text-primary/80">
-            View all →
-          </Button>
+          <div className="flex items-center gap-1 text-xs" style={{ color: "var(--color-primary)" }}>
+            <TrendingUp className="w-3.5 h-3.5" />
+            <span className="font-semibold">View all →</span>
+          </div>
         </div>
 
         {/* API Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
-          {apiServices.map((service, index) => (
-            <Card
-              key={service.title}
-              className="bg-gray-900/50 border-gray-700 hover:border-gray-600 transition-colors"
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+          gap: 1,
+          background: border,
+          border: `1px solid ${border}`,
+          borderRadius: 12,
+          overflow: "hidden",
+          marginBottom: 24,
+        }}>
+          {filtered.map(service => (
+            <div key={service.title}
+              style={{ background: card, padding: "20px", display: "flex", flexDirection: "column", gap: 12, cursor: "pointer", transition: "background 0.15s" }}
+              onMouseEnter={e => e.currentTarget.style.background = isDark ? "rgba(255,255,255,0.025)" : "#fafaf8"}
+              onMouseLeave={e => e.currentTarget.style.background = card}
             >
-              <CardHeader className="pb-3">
-                <div className="flex items-start gap-3">
-                  <div
-                    className={`w-12 h-12 rounded-lg bg-gradient-to-r ${service.color} flex items-center justify-center text-2xl`}
-                  >
-                    {service.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <CardTitle className="text-white text-lg leading-tight mb-1">{service.title}</CardTitle>
-                    <div className="text-sm text-gray-400">{service.provider}</div>
-                  </div>
+              {/* Top */}
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: 10, flexShrink: 0,
+                  background: `${service.color}18`, border: `1px solid ${service.color}30`,
+                  display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22,
+                }}>
+                  {service.icon}
                 </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <CardDescription className="text-gray-300 text-sm mb-4 line-clamp-3">
-                  {service.description}
-                </CardDescription>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: text, lineHeight: 1.2 }}>{service.title}</span>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, padding: "2px 6px",
+                      background: `${service.color}18`, color: service.color,
+                      border: `1px solid ${service.color}30`, borderRadius: 4,
+                    }}>{service.tag}</span>
+                  </div>
+                  <span style={{ fontSize: 11, color: subtle, marginTop: 2, display: "block" }}>{service.provider}</span>
+                </div>
+              </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 text-sm text-gray-400">
-                    <div className="flex items-center gap-1">
-                      <Users className="w-4 h-4" />
-                      {service.users}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      {service.rating}
-                    </div>
+              {/* Description */}
+              <p style={{ fontSize: 12, color: muted, lineHeight: 1.7, flex: 1,
+                overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const }}>
+                {service.description}
+              </p>
+
+              {/* Footer */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, color: muted }}>
+                    <Users className="w-3.5 h-3.5" />
+                    {service.users}
                   </div>
-                  <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
-                    <ExternalLink className="w-4 h-4" />
-                  </Button>
+                  <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, color: muted }}>
+                    <Star className="w-3.5 h-3.5" style={{ fill: "#fbbf24", color: "#fbbf24" }} />
+                    {service.rating}
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+                <button style={{
+                  display: "flex", alignItems: "center", gap: 4, padding: "5px 10px", fontSize: 11, fontWeight: 600,
+                  background: "color-mix(in srgb, var(--color-primary) 10%, transparent)",
+                  color: "var(--color-primary)", border: "1px solid color-mix(in srgb, var(--color-primary) 25%, transparent)",
+                  borderRadius: 6, cursor: "pointer",
+                }}>
+                  <ExternalLink className="w-3 h-3" /> Use API
+                </button>
+              </div>
+            </div>
           ))}
         </div>
 
-        {/* Bottom CTA Section */}
-        <div className="bg-gray-900/50 rounded-lg p-8 border border-gray-700">
-          <div className="max-w-2xl">
-            <h3 className="text-2xl font-bold text-white mb-4">Do you need custom web scrapers?</h3>
-            <p className="text-gray-300 mb-6">
-              Our expert consultants and developers guarantee data quality and availability. Leave the management of
-              your web data pipeline to us, and focus on your company's business outcomes.
-            </p>
-            <div className="flex gap-4">
-              <Button className="bg-primary hover:bg-primary/90">Learn more</Button>
-              <Button variant="outline" className="border-gray-600 text-gray-300 hover:text-white bg-transparent">
-                Contact sales
-              </Button>
+        {/* CTA */}
+        <div style={{
+          padding: "32px", border: `1px solid ${border}`, borderRadius: 12, background: card,
+          display: "flex", flexDirection: "column", gap: 16,
+        }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
+            <div style={{ flex: 1, minWidth: 280 }}>
+              <h3 style={{ fontSize: 20, fontWeight: 900, color: text, letterSpacing: "-0.03em", marginBottom: 8 }}>
+                Need a custom scraper?
+              </h3>
+              <p style={{ fontSize: 13, color: muted, lineHeight: 1.7, maxWidth: 480 }}>
+                Our expert team builds tailored web data pipelines with guaranteed quality and availability. Focus on your business — we handle the infrastructure.
+              </p>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+              <button style={{
+                padding: "10px 20px", fontSize: 13, fontWeight: 700,
+                background: "var(--color-primary)", color: "#fff", border: "none",
+                borderRadius: 8, cursor: "pointer",
+                boxShadow: "0 4px 16px color-mix(in srgb, var(--color-primary) 35%, transparent)",
+              }}>Learn more</button>
+              <button style={{
+                padding: "10px 20px", fontSize: 13, fontWeight: 600,
+                background: "transparent", color: text, border: `1px solid ${border}`,
+                borderRadius: 8, cursor: "pointer",
+              }}>Contact sales</button>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 }

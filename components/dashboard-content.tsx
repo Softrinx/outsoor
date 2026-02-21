@@ -1,51 +1,54 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { ArrowRight, Code, Database, Shield } from "lucide-react"
+"use client"
+
+import { ArrowRight, Code, Database, Shield, TrendingUp, Zap, Globe } from "lucide-react"
+import { useTheme } from "@/contexts/themeContext"
 
 export function DashboardContent() {
+  const { isDark } = useTheme()
+
+  const card   = isDark ? "var(--color-surface-1)" : "#ffffff"
+  const border = isDark ? "var(--color-border)"    : "#e2e2e0"
+  const text   = isDark ? "var(--color-text)"      : "#0a0a0b"
+  const muted  = isDark ? "#71717a"                : "#71717a"
+
   const features = [
-    {
-      title: "API Integration",
-      description: "Connect your applications with our powerful API endpoints",
-      icon: Code,
-      color: "text-primary",
-    },
-    {
-      title: "Data Analytics",
-      description: "Get insights from your data with advanced analytics tools",
-      icon: Database,
-      color: "text-blue-400",
-    },
-    {
-      title: "Security",
-      description: "Enterprise-grade security for all your applications",
-      icon: Shield,
-      color: "text-red-400",
-    },
+    { title: "API Integration",   description: "Connect your applications with our powerful unified API endpoints. One key, 50+ models.", icon: Code,       color: "#6366f1" },
+    { title: "Data Analytics",    description: "Get real-time insights from your usage data with advanced analytics and visualisation.",   icon: Database,   color: "#06b6d4" },
+    { title: "Security",          description: "Enterprise-grade security, SOC 2 compliance, and end-to-end TLS 1.3 on all traffic.",    icon: Shield,     color: "#ef4444" },
+    { title: "Performance",       description: "Sub-200ms median latency across all endpoints with 99.99% uptime SLA guaranteed.",       icon: Zap,        color: "#10b981" },
+    { title: "Global Reach",      description: "Serve customers worldwide with edge infrastructure and auto-scaling on demand.",          icon: Globe,      color: "#f59e0b" },
+    { title: "Cost Efficiency",   description: "Transparent pay-as-you-go pricing at $0.001/1K tokens. No subscriptions, no surprises.", icon: TrendingUp, color: "#8b5cf6" },
   ]
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {features.map((feature, index) => (
-        <Card key={feature.title} className="glass-effect border-white/10 hover-lift">
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <div className={`p-2 rounded-lg bg-white/5 ${feature.color}`}>
-                <feature.icon className="h-5 w-5" />
-              </div>
-              <div>
-                <CardTitle className="text-lg">{feature.title}</CardTitle>
-              </div>
-            </div>
-            <CardDescription className="text-muted-foreground">{feature.description}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button variant="ghost" className="w-full justify-between hover:bg-white/10">
-              Learn More
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </CardContent>
-        </Card>
+    <div style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+      gap: 1,
+      background: border,
+      border: `1px solid ${border}`,
+      borderRadius: 12,
+      overflow: "hidden",
+    }}>
+      {features.map(f => (
+        <div key={f.title}
+          style={{ background: card, padding: "24px", display: "flex", flexDirection: "column", gap: 14, cursor: "pointer", transition: "background 0.15s" }}
+          onMouseEnter={e => e.currentTarget.style.background = isDark ? "rgba(255,255,255,0.025)" : "#fafaf8"}
+          onMouseLeave={e => e.currentTarget.style.background = card}
+        >
+          <div style={{ width: 40, height: 40, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center",
+            background: `${f.color}18`, border: `1px solid ${f.color}30` }}>
+            <f.icon className="w-4 h-4" style={{ color: f.color }} />
+          </div>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: text, marginBottom: 6 }}>{f.title}</div>
+            <div style={{ fontSize: 12, color: muted, lineHeight: 1.7 }}>{f.description}</div>
+          </div>
+          <button style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 600,
+            color: "var(--color-primary)", background: "none", border: "none", cursor: "pointer", padding: 0, marginTop: "auto" }}>
+            Learn more <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
       ))}
     </div>
   )
