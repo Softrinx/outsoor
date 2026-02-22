@@ -13,6 +13,8 @@ export async function updateUserProfile(formData: FormData) {
 
   try {
     const name = formData.get("name") as string
+    const bio = formData.get("bio") as string
+    const location = formData.get("location") as string
 
     const updates: any = {}
 
@@ -25,6 +27,24 @@ export async function updateUserProfile(formData: FormData) {
         return { success: false, error: `Profile update failed: ${metaError.message}` }
       }
       updates.name = name
+    }
+
+    // Update bio and location in profiles table
+    const profileUpdates: any = {}
+    if (bio !== undefined) profileUpdates.bio = bio || null
+    if (location !== undefined) profileUpdates.location = location || null
+
+    if (Object.keys(profileUpdates).length > 0) {
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .update(profileUpdates)
+        .eq("id", user.id)
+
+      if (profileError) {
+        return { success: false, error: `Failed to update profile: ${profileError.message}` }
+      }
+      updates.bio = bio
+      updates.location = location
     }
 
     return {
@@ -46,12 +66,23 @@ type ProfileRow = {
   billing_notifications: boolean
   product_updates: boolean
   marketing_updates: boolean
+  chat_messages: boolean
+  security_push_alerts: boolean
+  in_app_notifications: boolean
+  chat_notifications: boolean
+  tips: boolean
+  quiet_hours: boolean
+  quiet_hours_start: string
+  quiet_hours_end: string
+  bio: string | null
+  location: string | null
+  dark_theme: boolean
 }
 
 type ProfileNotificationUpdates = Partial<Omit<ProfileRow, "id">>
 
 const profileSelectFields =
-  "id, email_notifications, push_notifications, security_alerts, billing_notifications, product_updates, marketing_updates"
+  "id, email_notifications, push_notifications, security_alerts, billing_notifications, product_updates, marketing_updates, chat_messages, security_push_alerts, in_app_notifications, chat_notifications, tips, quiet_hours, quiet_hours_start, quiet_hours_end, bio, location, dark_theme"
 
 export async function getProfile() {
   const supabase = await createClient()
