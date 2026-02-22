@@ -1,8 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
-
-// List of admin emails
-const ADMIN_EMAILS = ["admin@Modelsnest.com"]
+import { isAdmin as checkIsAdmin } from "@/lib/admin-utils"
+import type { SupabaseClient } from "@supabase/supabase-js"
 
 // User type
 export type User = {
@@ -55,17 +54,19 @@ export async function getCurrentUser(): Promise<User | null> {
 // Require admin role - returns user or redirects to login
 export async function requireAdmin(): Promise<User> {
   const user = await requireAuth()
+  const supabase = await createClient()
 
-  if (!ADMIN_EMAILS.includes(user.email?.toLowerCase() || "")) {
+  const userIsAdmin = await checkIsAdmin(supabase, user.id)
+  if (!userIsAdmin) {
     redirect("/login")
   }
 
   return user
 }
 
-// Check if user is admin
-export function isAdmin(user: User | null): boolean {
-  return !!user && ADMIN_EMAILS.includes(user.email?.toLowerCase() || "")
+// Check if user is admin (requires database query)
+export async function isAdmin(supabase: SupabaseClient, userId: string): Promise<boolean> {
+  return await checkIsAdmin(supabase, userId)
 }
 
 // Check if user is authenticated

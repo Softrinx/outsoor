@@ -2,9 +2,7 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { createMiddlewareClient } from "@/lib/supabase/middleware"
 import { hasSupabaseEnv } from "@/lib/supabase/env"
-
-// List of admin emails - must match the one in admin-login-form.tsx and admin-auth.ts
-const ADMIN_EMAILS = ["admin@Modelsnest.com"]
+import { isAdmin as checkIsAdmin } from "@/lib/admin-utils"
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next({
@@ -29,16 +27,16 @@ export async function middleware(request: NextRequest) {
   const adminLoginRoute = "/admin/login"
 
   const isAuthenticated = !!user
-  const isAdmin = isAuthenticated && ADMIN_EMAILS.includes(user?.email?.toLowerCase() || "")
 
-  // Allow access to admin login page for everyone
+  // Check if user is admin by querying the database
+  let isAdmin = false
+  if (isAuthenticated && user) {
+    isAdmin = await checkIsAdmin(supabase, user.id)
+  }
+
+  // Redirect admin login page to normal login (admins use the same login form)
   if (pathname === adminLoginRoute) {
-    // If already logged in as admin, redirect to admin panel
-    if (isAdmin) {
-      return NextResponse.redirect(new URL("/admin", request.url))
-    }
-    // Otherwise, allow access to login page
-    return response
+    return NextResponse.redirect(new URL("/login", request.url))
   }
 
   // Redirect authenticated users away from auth pages
@@ -46,7 +44,9 @@ export async function middleware(request: NextRequest) {
     authRoutes.some((route) => pathname.startsWith(route)) &&
     isAuthenticated
   ) {
-    return NextResponse.redirect(new URL("/dashboard", request.url))
+    // Route based on admin status
+    const redirectPath = isAdmin ? "/admin" : "/dashboard"
+    return NextResponse.redirect(new URL(redirectPath, request.url))
   }
 
   // Redirect unauthenticated users away from protected pages
@@ -60,7 +60,7 @@ export async function middleware(request: NextRequest) {
   // Protect admin routes - require both authentication and admin role
   if (adminRoutes.some((route) => pathname.startsWith(route))) {
     if (!isAuthenticated) {
-      return NextResponse.redirect(new URL("/admin/login", request.url))
+      return NextResponse.redirect(new URL("/login", request.url))
     }
     if (!isAdmin) {
       // Redirect non-admin users to dashboard

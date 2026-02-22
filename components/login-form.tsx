@@ -5,12 +5,10 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-// import { login } from "@/app/actions/auth"
 import { Loader2, Mail, Lock, Eye, EyeOff } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
+import { isAdmin } from "@/lib/admin-utils"
 import Link from "next/link"
-
-const ADMIN_EMAILS = ["admin@Modelsnest.com"]
 
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null)
@@ -39,7 +37,7 @@ export function LoginForm() {
     setError(null)
 
     try {
-      console.log("Calling login action...")
+      console.log("Attempting authentication...")
       const result = await supabase.auth.signInWithPassword({
         email: formData.get("email") as string,
         password: formData.get("password") as string,
@@ -50,11 +48,12 @@ export function LoginForm() {
         console.log("Login failed with error:", result.error)
         setError(result.error.message)
         setIsLoading(false)
-      } else {
-        const loggedInEmail = result.data.user?.email?.toLowerCase()
-        const redirectPath = loggedInEmail && ADMIN_EMAILS.includes(loggedInEmail)
-          ? "/admin"
-          : "/dashboard"
+      } else if (result.data?.user) {
+        // Check if user is admin from database
+        console.log("Checking admin status...")
+        const userIsAdmin = await isAdmin(supabase, result.data.user.id)
+        
+        const redirectPath = userIsAdmin ? "/admin" : "/dashboard"
 
         console.log("Login successful, redirecting to:", redirectPath)
         setIsLoading(false)

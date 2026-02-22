@@ -2,9 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
-
-// List of admin emails - update this to add more admins
-const ADMIN_EMAILS = ["admin@Modelsnest.com"]
+import { isAdmin as checkIsAdmin } from "@/lib/admin-utils"
 
 export async function adminLogin(prevState: any, formData: FormData) {
   const email = formData.get("email") as string
@@ -12,11 +10,6 @@ export async function adminLogin(prevState: any, formData: FormData) {
 
   if (!email || !password) {
     return { error: "Email and password are required" }
-  }
-
-  // Check if email is in admin list
-  if (!ADMIN_EMAILS.includes(email.toLowerCase())) {
-    return { error: "Invalid admin credentials" }
   }
 
   try {
@@ -37,8 +30,10 @@ export async function adminLogin(prevState: any, formData: FormData) {
       return { error: "Login failed. Please try again." }
     }
 
-    // Verify user is admin by checking if email is in admin list
-    if (!ADMIN_EMAILS.includes(data.user.email?.toLowerCase() || "")) {
+    // Check if user is admin from database
+    const userIsAdmin = await checkIsAdmin(supabase, data.user.id)
+    
+    if (!userIsAdmin) {
       // Sign out if not admin
       await supabase.auth.signOut()
       return { error: "You do not have admin access" }

@@ -8,9 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Lock, Mail, Eye, EyeOff, Loader2 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
-
-// List of admin emails - must match the one in admin-auth.ts
-const ADMIN_EMAILS = ["admin@Modelsnest.com"]
+import { isAdmin } from "@/lib/admin-utils"
 
 export function AdminLoginForm() {
   const [error, setError] = useState<string | null>(null)
@@ -42,13 +40,6 @@ export function AdminLoginForm() {
       const email = formData.get("email") as string
       const password = formData.get("password") as string
 
-      // Check if email is authorized as admin
-      if (!ADMIN_EMAILS.includes(email.toLowerCase())) {
-        setError("Invalid admin credentials")
-        setIsLoading(false)
-        return
-      }
-
       console.log("Calling Supabase login...")
       const result = await supabase.auth.signInWithPassword({
         email,
@@ -61,6 +52,18 @@ export function AdminLoginForm() {
         setError(result.error.message || "Invalid credentials")
         setIsLoading(false)
       } else if (result.data?.user) {
+        // Check if user is admin from database
+        console.log("Checking admin status...")
+        const userIsAdmin = await isAdmin(supabase, result.data.user.id)
+        
+        if (!userIsAdmin) {
+          setError("You do not have admin access")
+          setIsLoading(false)
+          // Sign out non-admin
+          await supabase.auth.signOut()
+          return
+        }
+
         console.log("Login successful, redirecting...")
         setIsLoading(false)
         router.push("/admin")

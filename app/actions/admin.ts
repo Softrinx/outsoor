@@ -2,9 +2,7 @@
 
 import { requireAdmin } from "@/lib/auth"
 import { createAdminClient } from "@/lib/supabase/server"
-
-// List of admin emails for role detection
-const ADMIN_EMAILS = ["admin@Modelsnest.com"]
+import { isAdmin } from "@/lib/admin-utils"
 
 export interface AdminStats {
   totalUsers: number
@@ -102,23 +100,24 @@ export async function getUsers(): Promise<AdminUser[]> {
     }
 
     // Transform Supabase users to AdminUser format
-    const adminUsers: AdminUser[] = users.map((user) => {
+    const adminUsers: AdminUser[] = await Promise.all(users.map(async (user) => {
       const suspendedUntil = user.banned_until || null
       const suspendedUntilTime = suspendedUntil ? new Date(suspendedUntil).getTime() : null
       const isSuspended = suspendedUntilTime !== null && Number.isFinite(suspendedUntilTime) && suspendedUntilTime > Date.now()
+      const userIsAdmin = await isAdmin(supabase, user.id)
 
       return {
         id: user.id,
         email: user.email || 'No email',
         name: user.user_metadata?.name || user.user_metadata?.full_name || null,
-        role: ADMIN_EMAILS.includes(user.email?.toLowerCase() || '') ? 'admin' : 'user',
+        role: userIsAdmin ? 'admin' : 'user',
         created_at: user.created_at,
         balance: 0, // TODO: Fetch from user_credits table when implemented
         last_sign_in_at: user.last_sign_in_at || null,
         is_suspended: isSuspended,
         suspended_until: suspendedUntil,
       }
-    })
+    }))
 
     // Sort by created_at descending (newest first)
     return adminUsers.sort((a, b) => 
@@ -198,8 +197,8 @@ export async function adminSuspendUserAction(formData: FormData): Promise<AdminS
     return { success: false, error: "User not found" }
   }
 
-  const targetEmail = userData.user.email?.toLowerCase() || ""
-  if (ADMIN_EMAILS.includes(targetEmail)) {
+  const targetIsAdmin = await isAdmin(supabase, userId)
+  if (targetIsAdmin) {
     return { success: false, error: "Cannot suspend another admin account" }
   }
 
