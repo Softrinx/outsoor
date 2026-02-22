@@ -107,7 +107,7 @@ export function ModelSelector({ models, selectedModel, onModelChange, disabled }
         </motion.div>
       </button>
 
-      {/* Dropdown */}
+    
       <AnimatePresence>
         {open && (
           <motion.div
