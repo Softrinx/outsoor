@@ -71,7 +71,7 @@ export default async function AdminTransactionsPage() {
     <div className="min-h-screen" style={{ background: "var(--color-bg)", color: "var(--color-text)" }}>
       <div className="max-w-7xl mx-auto px-6 py-12">
 
-        {/* Page header */}
+        {/* transactions Page header */}
         <div className="flex items-end justify-between pb-8"
           style={{ borderBottom: "1px solid var(--color-border)" }}>
           <div className="flex flex-col gap-2">
