@@ -14,7 +14,7 @@ export interface ThemeConfig extends Required<ThemeOverrides> {
   mode: ColorMode
 }
 
-const STORAGE_KEY = 'outsoor:theme'
+const STORAGE_KEY = 'Modelsnest:theme'
 
 export const ThemeService = {
   load(): ThemeConfig {

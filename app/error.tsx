@@ -5,7 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Home, RefreshCw, Bug, AlertTriangle, HelpCircle, ArrowLeft } from "lucide-react"
-import { OutsoorLogo } from "@/components/outsoor-logo"
+import { ModelsnestLogo } from "@/components/Modelsnest-logo"
 
 interface ErrorProps {
   error: Error & { digest?: string }
@@ -68,7 +68,7 @@ export default function Error({ error, reset }: ErrorProps) {
       <header className="border-b border-border/20">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
-            <OutsoorLogo size="lg" variant="header" />
+            <ModelsnestLogo size="lg" variant="header" />
             <div className="flex items-center gap-4">
               <Link href="/help">
                 <Button variant="ghost" size="sm">
@@ -208,7 +208,7 @@ export default function Error({ error, reset }: ErrorProps) {
       <footer className="border-t border-border/20 py-6">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-sm text-muted-foreground">
-            © 2024 Outsoor. All rights reserved. | 
+            © 2024 Modelsnest. All rights reserved. | 
             <Link href="/help" className="text-green-500 hover:text-green-600 ml-1">
               Need help?
             </Link>

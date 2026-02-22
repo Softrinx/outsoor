@@ -220,7 +220,7 @@ export default function TermsOfService() {
             className="flex flex-col gap-5"
           >
             <p className="text-lg leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-              Please read these terms carefully before using Outsoor's AI API services.
+              Please read these terms carefully before using Modelsnest's AI API services.
               They govern your access and use of our platform.
             </p>
             <div className="flex items-center gap-3">
@@ -273,13 +273,13 @@ export default function TermsOfService() {
         <SectionRow num="01" id="s0" index={0} isInView={isInView} title="Acceptance of Terms"
           icon={<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M4 8l3 3 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.25"/></svg>}
         >
-          <p>By accessing or using Outsoor's AI API services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+          <p>By accessing or using Modelsnest's AI API services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
         </SectionRow>
 
         <SectionRow num="02" id="s1" index={1} isInView={isInView} title="Description of Services"
           icon={<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.25"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.25"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.25"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.25"/></svg>}
         >
-          <p>Outsoor provides enterprise-grade AI APIs for developers and businesses. Our services include machine learning models, natural language processing, computer vision, and other AI capabilities accessible through REST APIs.</p>
+          <p>Modelsnest provides enterprise-grade AI APIs for developers and businesses. Our services include machine learning models, natural language processing, computer vision, and other AI capabilities accessible through REST APIs.</p>
         </SectionRow>
 
         <SectionRow num="03" index={2} isInView={isInView} title="User Accounts & Registration"
@@ -379,7 +379,7 @@ export default function TermsOfService() {
           icon={<svg width="16" height="16" fill="none" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.25"/><path d="M2 5l6 5 6-5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round"/></svg>}
         >
           <p>For questions about these Terms of Service, please contact us at:</p>
-          <ContactBox rows={[{ label: "Email", value: "legal@outsoor.com" }, { label: "Address", value: "Nairobi, Kenya" }]} />
+          <ContactBox rows={[{ label: "Email", value: "legal@Modelsnest.com" }, { label: "Address", value: "Nairobi, Kenya" }]} />
         </SectionRow>
 
         <div className="py-8" />

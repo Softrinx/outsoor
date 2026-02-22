@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu, Terminal, X } from "lucide-react"
 import { LogoutButton } from "@/components/logout-button"
-import { OutsoorLogo } from "@/components/outsoor-logo"
+import { ModelsnestLogo } from "@/components/Modelsnest-logo"
 import { useTheme } from "@/contexts/themeContext"
 
 interface AuthUser {
@@ -62,7 +62,7 @@ export function Header() {
 
         {/* Left — logo + nav */}
         <div className="flex items-center gap-10">
-          <OutsoorLogo size="lg" variant="header" />
+          <ModelsnestLogo size="lg" variant="header" />
 
           <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (

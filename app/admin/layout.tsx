@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import { AdminLayoutClient } from "./admin-layout-client"
 
 // List of admin emails - must match the one in other auth files
-const ADMIN_EMAILS = ["admin@outsoor.com"]
+const ADMIN_EMAILS = ["admin@Modelsnest.com"]
 
 export default async function AdminLayout({
   children,

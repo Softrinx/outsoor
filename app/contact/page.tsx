@@ -13,28 +13,28 @@ const contacts = [
     icon: Users,
     category: "Sales & Product",
     description: "Demos, pricing questions, and enterprise evaluations.",
-    email: "sales@outsoor.com",
+    email: "sales@Modelsnest.com",
     response: "2h response",
   },
   {
     icon: Mail,
     category: "Support",
     description: "Technical issues or questions about your account.",
-    email: "support@outsoor.com",
+    email: "support@Modelsnest.com",
     response: "1h response",
   },
   {
     icon: Shield,
     category: "Security",
     description: "Report a vulnerability or security concern responsibly.",
-    email: "security@outsoor.com",
+    email: "security@Modelsnest.com",
     response: "24h response",
   },
   {
     icon: Handshake,
     category: "Partnerships",
     description: "Integrations, co-marketing, or other partnership opportunities.",
-    email: "partners@outsoor.com",
+    email: "partners@Modelsnest.com",
     response: "48h response",
   },
 ]
@@ -165,7 +165,7 @@ export default function ContactPage() {
             className="flex flex-col gap-5"
           >
             <p className="text-lg leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-              Reach the right team at Outsoor. We typically respond fast — pick your channel below or send us a message directly.
+              Reach the right team at Modelsnest. We typically respond fast — pick your channel below or send us a message directly.
             </p>
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">

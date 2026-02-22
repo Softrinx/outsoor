@@ -2,9 +2,9 @@ export function StructuredData() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Outsoor",
+    "name": "Modelsnest",
     "description": "Production-ready AI infrastructure with <200ms latency, 99.99% uptime, and transparent pricing. Built by developers, for developers.",
-    "url": "https://outsoor.com",
+    "url": "https://Modelsnest.com",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Web",
     "offers": {
@@ -15,11 +15,11 @@ export function StructuredData() {
     },
     "provider": {
       "@type": "Organization",
-      "name": "Outsoor",
-      "url": "https://outsoor.com",
+      "name": "Modelsnest",
+      "url": "https://Modelsnest.com",
       "sameAs": [
-        "https://twitter.com/outsoor",
-        "https://github.com/outsoor"
+        "https://twitter.com/Modelsnest",
+        "https://github.com/Modelsnest"
       ]
     },
     "featureList": [
@@ -43,13 +43,13 @@ export function StructuredData() {
     },
     "author": {
       "@type": "Organization",
-      "name": "Outsoor Team"
+      "name": "Modelsnest Team"
     },
     "datePublished": "2024-01-01",
     "dateModified": new Date().toISOString().split('T')[0],
     "softwareVersion": "1.0.0",
-    "downloadUrl": "https://outsoor.com/signup",
-    "installUrl": "https://outsoor.com/signup"
+    "downloadUrl": "https://Modelsnest.com/signup",
+    "installUrl": "https://Modelsnest.com/signup"
   };
 
   return (
@@ -66,20 +66,20 @@ export function OrganizationStructuredData() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Outsoor",
-    "url": "https://outsoor.com",
-    "logo": "https://outsoor.com/logo.png",
+    "name": "Modelsnest",
+    "url": "https://Modelsnest.com",
+    "logo": "https://Modelsnest.com/logo.png",
     "description": "Enterprise AI APIs built for scale with production-ready infrastructure",
     "foundingDate": "2024",
     "sameAs": [
-      "https://twitter.com/outsoor",
-      "https://github.com/outsoor",
-      "https://linkedin.com/company/outsoor"
+      "https://twitter.com/Modelsnest",
+      "https://github.com/Modelsnest",
+      "https://linkedin.com/company/Modelsnest"
     ],
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer service",
-      "email": "support@outsoor.com"
+      "email": "support@Modelsnest.com"
     },
     "address": {
       "@type": "PostalAddress",

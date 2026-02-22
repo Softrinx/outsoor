@@ -247,7 +247,7 @@ export default function TestTokenPage() {
             <div>
               <h4 className="font-medium mb-2">Getting Your API Token</h4>
               <ol className="list-decimal list-inside space-y-1 text-sm text-muted-foreground">
-                <li>Log in to your Outsoor dashboard</li>
+                <li>Log in to your Modelsnest dashboard</li>
                 <li>Navigate to the API section</li>
                 <li>Create a new API token</li>
                 <li>Copy the generated token</li>

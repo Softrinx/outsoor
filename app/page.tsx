@@ -28,16 +28,16 @@ export const metadata: Metadata = {
     'API Integration'
   ],
   openGraph: {
-    title: 'Outsoor - Enterprise AI APIs Built for Scale',
+    title: 'Modelsnest - Enterprise AI APIs Built for Scale',
     description: 'Production-ready AI infrastructure with <200ms latency, 99.99% uptime, and transparent pricing. Built by developers, for developers.',
-    url: 'https://outsoor.com',
-    siteName: 'Outsoor',
+    url: 'https://Modelsnest.com',
+    siteName: 'Modelsnest',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Outsoor - Enterprise AI APIs',
+        alt: 'Modelsnest - Enterprise AI APIs',
       },
     ],
     locale: 'en_US',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Outsoor - Enterprise AI APIs Built for Scale',
+    title: 'Modelsnest - Enterprise AI APIs Built for Scale',
     description: 'Production-ready AI infrastructure with <200ms latency, 99.99% uptime, and transparent pricing.',
     images: ['/og-image.png'],
   },

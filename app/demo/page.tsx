@@ -75,7 +75,7 @@ export default function DemoPage() {
                 color: "var(--color-text)",
               }}
             >
-              See Outsoor
+              See Modelsnest
               <br />
               <span style={{
                 background: "linear-gradient(90deg, var(--color-primary), var(--color-accent))",

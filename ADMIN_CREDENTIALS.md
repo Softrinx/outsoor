@@ -5,7 +5,7 @@
 **Login URL:** [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
 
 **Credentials:**
-- Email: `admin@outsoor.com`
+- Email: `admin@Modelsnest.com`
 - Password: `admin123!@#`
 
 > ⚠️ **IMPORTANT:** Change this password after first login!

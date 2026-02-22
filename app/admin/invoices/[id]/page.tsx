@@ -51,10 +51,10 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
           <p className="text-sm text-[#9ca3af] print:text-gray-700">#{transaction.reference_id || transaction.id}</p>
         </div>
         <div className="text-right mt-4 md:mt-0">
-          <p className="text-lg font-semibold text-white print:text-black">Outsoor Inc.</p>
+          <p className="text-lg font-semibold text-white print:text-black">Modelsnest Inc.</p>
           <p className="text-sm text-[#9ca3af] print:text-gray-700">123 AI Street, Suite 400</p>
           <p className="text-sm text-[#9ca3af] print:text-gray-700">Innoville, CA 90210</p>
-          <p className="text-sm text-[#9ca3af] print:text-gray-700">contact@outsoor.com</p>
+          <p className="text-sm text-[#9ca3af] print:text-gray-700">contact@Modelsnest.com</p>
         </div>
       </div>
 

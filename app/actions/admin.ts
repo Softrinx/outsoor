@@ -4,7 +4,7 @@ import { requireAdmin } from "@/lib/auth"
 import { createAdminClient } from "@/lib/supabase/server"
 
 // List of admin emails for role detection
-const ADMIN_EMAILS = ["admin@outsoor.com"]
+const ADMIN_EMAILS = ["admin@Modelsnest.com"]
 
 export interface AdminStats {
   totalUsers: number

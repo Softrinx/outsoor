@@ -25,18 +25,18 @@ const endpoints = [
 ]
 
 const sdks = [
-  { name: "Python",     version: "1.2.0", downloads: "45.2K", img: "/images/python.png",  install: "pip install outsoor",               accent: "#3b82f6" },
-  { name: "Node.js",    version: "2.1.0", downloads: "67.8K", img: "/images/nodejs.png",  install: "npm install outsoor",               accent: "#22c55e" },
-  { name: "Go",         version: "0.9.1", downloads: "12.3K", img: "/images/go.png",      install: "go get github.com/outsoor/go",      accent: "#06b6d4" },
-  { name: "PHP",        version: "1.0.3", downloads: "15.7K", img: "/images/php.png",     install: "composer require outsoor/php",      accent: "#8b5cf6" },
-  { name: "Java",       version: "1.0.5", downloads: "23.4K", img: "/images/java.png",    install: "implementation 'com.outsoor:sdk'",  accent: "#f59e0b" },
-  { name: "C#",         version: "1.1.2", downloads: "18.9K", img: "/images/c.png",  install: "dotnet add package Outsoor",        accent: "#ec4899" },
+  { name: "Python",     version: "1.2.0", downloads: "45.2K", img: "/images/python.png",  install: "pip install Modelsnest",               accent: "#3b82f6" },
+  { name: "Node.js",    version: "2.1.0", downloads: "67.8K", img: "/images/nodejs.png",  install: "npm install Modelsnest",               accent: "#22c55e" },
+  { name: "Go",         version: "0.9.1", downloads: "12.3K", img: "/images/go.png",      install: "go get github.com/Modelsnest/go",      accent: "#06b6d4" },
+  { name: "PHP",        version: "1.0.3", downloads: "15.7K", img: "/images/php.png",     install: "composer require Modelsnest/php",      accent: "#8b5cf6" },
+  { name: "Java",       version: "1.0.5", downloads: "23.4K", img: "/images/java.png",    install: "implementation 'com.Modelsnest:sdk'",  accent: "#f59e0b" },
+  { name: "C#",         version: "1.1.2", downloads: "18.9K", img: "/images/c.png",  install: "dotnet add package Modelsnest",        accent: "#ec4899" },
 ]
 
 const examples: Record<string, string> = {
   Python: `import requests
 
-url = "https://api.outsoor.com/v1/chat/completions"
+url = "https://api.Modelsnest.com/v1/chat/completions"
 headers = {
     "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json"
@@ -52,7 +52,7 @@ response = requests.post(url, headers=headers, json=data)
 print(response.json())`,
 
   JavaScript: `const response = await fetch(
-  "https://api.outsoor.com/v1/chat/completions",
+  "https://api.Modelsnest.com/v1/chat/completions",
   {
     method: "POST",
     headers: {
@@ -68,7 +68,7 @@ print(response.json())`,
 const data = await response.json()
 console.log(data)`,
 
-  cURL: `curl https://api.outsoor.com/v1/chat/completions \\
+  cURL: `curl https://api.Modelsnest.com/v1/chat/completions \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -94,7 +94,7 @@ func main() {
     },
   })
   req, _ := http.NewRequest("POST",
-    "https://api.outsoor.com/v1/chat/completions",
+    "https://api.Modelsnest.com/v1/chat/completions",
     bytes.NewBuffer(payload))
   req.Header.Set("Authorization", "Bearer YOUR_API_KEY")
   req.Header.Set("Content-Type", "application/json")
@@ -323,7 +323,7 @@ export default function APIReferencePage() {
           reference.md
         </div>
         <span className="ml-4 text-xs font-mono" style={{ color: "var(--color-text-muted)", opacity: 0.3 }}>
-          outsoor / api-reference
+          Modelsnest / api-reference
         </span>
         <div className="ml-auto flex items-center gap-2 px-4 flex-shrink-0"
           style={{ borderLeft: `1px solid ${borderColor}`, height: "40px" }}>
@@ -470,7 +470,7 @@ export default function APIReferencePage() {
                 Your language. Our API.
               </h2>
               <p className="mt-2 text-sm max-w-md" style={{ color: "var(--color-text-muted)" }}>
-                Open-source, maintained by Outsoor engineering. Same interface across all languages.
+                Open-source, maintained by Modelsnest engineering. Same interface across all languages.
               </p>
             </div>
 
@@ -551,7 +551,7 @@ export default function APIReferencePage() {
       <div className="flex items-center justify-between px-6 text-xs font-mono flex-shrink-0"
         style={{ height: "24px", background: "var(--color-primary)", color: "#fff" }}>
         <div className="flex items-center gap-5">
-          <span>Outsoor API Reference</span>
+          <span>Modelsnest API Reference</span>
           <span style={{ opacity: 0.7 }}>{endpoints.length} endpoints · {sdks.length} SDKs</span>
         </div>
         <div className="flex items-center gap-4" style={{ opacity: 0.8 }}>

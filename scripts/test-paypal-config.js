@@ -116,7 +116,7 @@ function testPayPalConfig(envVars) {
   if (envVars.NEXT_PUBLIC_APP_URL) {
     console.log(`  ✅ App URL: ${envVars.NEXT_PUBLIC_APP_URL}`)
   } else {
-    console.log(`  ⚠️  App URL: Not set (using https://outsoor.com as default)`)
+    console.log(`  ⚠️  App URL: Not set (using https://Modelsnest.com as default)`)
   }
 
   return configValid

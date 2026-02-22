@@ -47,9 +47,9 @@ const endpoints = [
 const examples = [
   {
     lang: "Python",
-    code: `import outsoor
+    code: `import Modelsnest
 
-client = outsoor.Client("ptr_your_token_here")
+client = Modelsnest.Client("ptr_your_token_here")
 
 response = client.text.generate(
   model="gpt-4",
@@ -61,9 +61,9 @@ print(response.text)`,
   },
   {
     lang: "Node.js",
-    code: `import outsoor from "outsoor"
+    code: `import Modelsnest from "Modelsnest"
 
-const client = new outsoor.Client("ptr_your_token_here")
+const client = new Modelsnest.Client("ptr_your_token_here")
 
 const response = await client.text.generate({
   model: "gpt-4",
@@ -75,7 +75,7 @@ console.log(response.text)`,
   },
   {
     lang: "cURL",
-    code: `curl -X POST https://api.outsoor.com/v1/text \\
+    code: `curl -X POST https://api.Modelsnest.com/v1/text \\
   -H "Authorization: Bearer ptr_your_token_here" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -87,7 +87,7 @@ console.log(response.text)`,
   {
     lang: "PHP",
     code: `<?php
-$client = new Outsoor\\Client("ptr_your_token_here");
+$client = new Modelsnest\\Client("ptr_your_token_here");
 
 $response = $client->text->generate([
   "model"      => "gpt-4",
@@ -245,12 +245,12 @@ export default function DocsPage() {
             </span>
           </h1>
           <p className="text-lg leading-relaxed max-w-xl mt-4" style={{ color: "var(--color-text-muted)" }}>
-            Everything you need to integrate Outsoor into your stack. Base URL:{" "}
+            Everything you need to integrate Modelsnest into your stack. Base URL:{" "}
             <code
               className="text-sm px-2 py-0.5"
               style={{ background: "var(--color-surface-2)", color: "var(--color-primary)", border: "1px solid var(--color-border)" }}
             >
-              https://api.outsoor.com/v1
+              https://api.Modelsnest.com/v1
             </code>
           </p>
         </motion.div>
@@ -312,14 +312,14 @@ export default function DocsPage() {
                   <SectionLabel>Overview</SectionLabel>
                   <SectionHeading>Getting Started</SectionHeading>
                   <p className="text-sm leading-relaxed mb-6" style={{ color: "var(--color-text-muted)" }}>
-                    Outsoor provides a unified REST API for 50+ AI models. All requests use HTTPS and return JSON. Authentication is via Bearer token.
+                    Modelsnest provides a unified REST API for 50+ AI models. All requests use HTTPS and return JSON. Authentication is via Bearer token.
                   </p>
                   <div
                     className="grid grid-cols-1 md:grid-cols-3"
                     style={{ border: "1px solid var(--color-border)" }}
                   >
                     {[
-                      { label: "Base URL",      value: "api.outsoor.com/v1" },
+                      { label: "Base URL",      value: "api.Modelsnest.com/v1" },
                       { label: "Format",        value: "JSON" },
                       { label: "Auth",          value: "Bearer token" },
                     ].map((row, i, arr) => (
@@ -337,13 +337,13 @@ export default function DocsPage() {
 
                 <div>
                   <h3 className="text-base font-bold mb-3" style={{ color: "var(--color-text)" }}>Quick install</h3>
-                  <Code code={`pip install outsoor\n# or\nnpm install outsoor`} lang="bash" />
+                  <Code code={`pip install Modelsnest\n# or\nnpm install Modelsnest`} lang="bash" />
                 </div>
 
                 <div>
                   <h3 className="text-base font-bold mb-3" style={{ color: "var(--color-text)" }}>First request</h3>
                   <Code
-                    code={`import outsoor\n\nclient = outsoor.Client("ptr_your_token_here")\nresponse = client.text.generate(model="gpt-4", prompt="Hello!")\nprint(response.text)`}
+                    code={`import Modelsnest\n\nclient = Modelsnest.Client("ptr_your_token_here")\nresponse = client.text.generate(model="gpt-4", prompt="Hello!")\nprint(response.text)`}
                     lang="Python"
                   />
                 </div>
@@ -365,7 +365,7 @@ export default function DocsPage() {
                   <h3 className="text-base font-bold" style={{ color: "var(--color-text)" }}>Get your token</h3>
                   <div className="flex flex-col" style={{ border: "1px solid var(--color-border)" }}>
                     {[
-                      "Log in to your Outsoor dashboard",
+                      "Log in to your Modelsnest dashboard",
                       "Navigate to Settings → API Keys",
                       "Click Create new key",
                       "Copy the token — it won't be shown again",
@@ -519,7 +519,7 @@ export default function DocsPage() {
                 <div className="flex flex-col gap-3">
                   <h3 className="text-base font-bold" style={{ color: "var(--color-text)" }}>Install SDK</h3>
                   <Code
-                    code={`# Python\npip install outsoor\n\n# Node.js\nnpm install outsoor\n\n# Go\ngo get github.com/outsoor/outsoor-go`}
+                    code={`# Python\npip install Modelsnest\n\n# Node.js\nnpm install Modelsnest\n\n# Go\ngo get github.com/Modelsnest/Modelsnest-go`}
                     lang="bash"
                   />
                 </div>
@@ -540,7 +540,7 @@ export default function DocsPage() {
                 <div className="flex flex-col gap-3">
                   <h3 className="text-base font-bold" style={{ color: "var(--color-text)" }}>Verify your token</h3>
                   <Code
-                    code={`curl -X POST https://api.outsoor.com/v1/verify-token \\\n  -H "Content-Type: application/json" \\\n  -d '{"token": "ptr_your_token_here"}'`}
+                    code={`curl -X POST https://api.Modelsnest.com/v1/verify-token \\\n  -H "Content-Type: application/json" \\\n  -d '{"token": "ptr_your_token_here"}'`}
                     lang="bash"
                   />
                 </div>

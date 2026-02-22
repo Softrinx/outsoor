@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     const appUrl = getAppUrl(req)
 
     const chargeData = {
-      name: "Outsoor Credits Top-up",
+      name: "Modelsnest Credits Top-up",
       description: `Top-up $${amount} credits`,
       pricing_type: "fixed_price" as const,
       local_price: {

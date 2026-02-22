@@ -58,7 +58,7 @@ export default function CommunityPage() {
   const communityCategories = [
     {
       name: "Getting Started",
-      description: "New to Outsoor? Start here",
+      description: "New to Modelsnest? Start here",
       memberCount: 1234,
       discussionCount: 567,
       color: "bg-blue-500"
@@ -132,7 +132,7 @@ export default function CommunityPage() {
           <div className="text-center">
             <h1 className="text-4xl font-bold text-foreground mb-4">Community</h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Connect with fellow developers, share knowledge, and get help from the Outsoor community.
+              Connect with fellow developers, share knowledge, and get help from the Modelsnest community.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button className="bg-green-500 hover:bg-green-600">

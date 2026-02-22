@@ -131,7 +131,7 @@ export function ModelDocsPage({ user, modelSlug }: ModelDocsPageProps) {
           title: 'Basic Chat',
           description: 'Simple conversation with GPT-4 Turbo',
           language: 'javascript',
-          code: `const response = await fetch('https://api.outsoor.com/v1/chat/completions', {
+          code: `const response = await fetch('https://api.Modelsnest.com/v1/chat/completions', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -156,7 +156,7 @@ console.log(data.choices[0].message.content);`
           language: 'python',
           code: `import requests
 
-url = "https://api.outsoor.com/v1/chat/completions"
+url = "https://api.Modelsnest.com/v1/chat/completions"
 headers = {
     "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json"
@@ -240,7 +240,7 @@ print(result['choices'][0]['message']['content'])`
           title: 'Document Analysis',
           description: 'Analyze and summarize documents',
           language: 'javascript',
-          code: `const response = await fetch('https://api.outsoor.com/v1/chat/completions', {
+          code: `const response = await fetch('https://api.Modelsnest.com/v1/chat/completions', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -312,7 +312,7 @@ print(result['choices'][0]['message']['content'])`
           language: 'python',
           code: `import requests
 
-url = "https://api.outsoor.com/v1/chat/completions"
+url = "https://api.Modelsnest.com/v1/chat/completions"
 headers = {
     "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json"
@@ -395,7 +395,7 @@ formData.append('file', audioFile);
 formData.append('model', 'whisper-v3');
 formData.append('language', 'en');
 
-const response = await fetch('https://api.outsoor.com/v1/audio/transcriptions', {
+const response = await fetch('https://api.Modelsnest.com/v1/audio/transcriptions', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY'
@@ -462,7 +462,7 @@ console.log('Transcription:', data.text);`
           language: 'python',
           code: `import requests
 
-url = "https://api.outsoor.com/v1/text-to-speech"
+url = "https://api.Modelsnest.com/v1/text-to-speech"
 headers = {
     "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json"
@@ -539,7 +539,7 @@ with open("output.mp3", "wb") as f:
           title: 'Video Generation',
           description: 'Generate a video from text prompt',
           language: 'javascript',
-          code: `const response = await fetch('https://api.outsoor.com/v1/video/generations', {
+          code: `const response = await fetch('https://api.Modelsnest.com/v1/video/generations', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -608,7 +608,7 @@ console.log('Video URL:', data.video_url);`
           language: 'python',
           code: `import requests
 
-url = "https://api.outsoor.com/v1/video/creative"
+url = "https://api.Modelsnest.com/v1/video/creative"
 headers = {
     "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json"
@@ -682,7 +682,7 @@ print("Video URL:", result['video_url'])`
           title: 'Text Generation',
           description: 'Generate text with Llama 3 70B',
           language: 'javascript',
-          code: `const response = await fetch('https://api.outsoor.com/v1/completions', {
+          code: `const response = await fetch('https://api.Modelsnest.com/v1/completions', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -754,7 +754,7 @@ console.log(data.choices[0].text);`
           language: 'python',
           code: `import requests
 
-url = "https://api.outsoor.com/v1/chat/completions"
+url = "https://api.Modelsnest.com/v1/chat/completions"
 headers = {
     "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json"
@@ -826,7 +826,7 @@ print(result['choices'][0]['message']['content'])`
           title: 'Live Stream Processing',
           description: 'Process live stream content',
           language: 'javascript',
-          code: `const response = await fetch('https://api.outsoor.com/v1/stream/process', {
+          code: `const response = await fetch('https://api.Modelsnest.com/v1/stream/process', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -895,7 +895,7 @@ console.log('Moderation Score:', data.moderation_score);`
           language: 'python',
           code: `import requests
 
-url = "https://api.outsoor.com/v1/chat/moderate"
+url = "https://api.Modelsnest.com/v1/chat/moderate"
 headers = {
     "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json"

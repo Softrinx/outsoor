@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 
 // List of admin emails
-const ADMIN_EMAILS = ["admin@outsoor.com"]
+const ADMIN_EMAILS = ["admin@Modelsnest.com"]
 
 // User type
 export type User = {

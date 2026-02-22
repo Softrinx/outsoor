@@ -4,7 +4,7 @@ import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { useTheme } from "@/contexts/themeContext"
 
-interface OutsoorLogoProps {
+interface ModelsnestLogoProps {
   className?: string
   size?: "sm" | "md" | "lg" | "xl"
   variant?: "default" | "sidebar" | "header"
@@ -17,14 +17,14 @@ const sizeMap = {
   xl: { w: 180, h: 56 },
 }
 
-export function OutsoorLogo({ className, size = "md" }: OutsoorLogoProps) {
+export function ModelsnestLogo({ className, size = "md" }: ModelsnestLogoProps) {
   const { isDark } = useTheme()
   const s = sizeMap[size]
 
   return (
     <Image
       src={isDark ? "/logodark.png" : "/logolight.png"}
-      alt="Outsoor"
+      alt="Modelsnest"
       width={s.w}
       height={s.h}
       className={cn("object-contain", className)}
@@ -33,13 +33,13 @@ export function OutsoorLogo({ className, size = "md" }: OutsoorLogoProps) {
   )
 }
 
-export function OutsoorLogoCompact({ className }: { className?: string }) {
+export function ModelsnestLogoCompact({ className }: { className?: string }) {
   const { isDark } = useTheme()
 
   return (
     <Image
       src={isDark ? "/logodark.png" : "/logolight.png"}
-      alt="Outsoor"
+      alt="Modelsnest"
       width={38}
       height={38}
       className={cn("object-contain", className)}

@@ -154,7 +154,7 @@ export default function EnterprisePage() {
             className="flex flex-col gap-6"
           >
             <p className="text-lg leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-              Outsoor Enterprise gives large teams private infrastructure, dedicated support, custom compliance, and volume pricing — everything you need to run mission-critical AI in production.
+              Modelsnest Enterprise gives large teams private infrastructure, dedicated support, custom compliance, and volume pricing — everything you need to run mission-critical AI in production.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="#contact">

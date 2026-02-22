@@ -6,7 +6,7 @@ import { useTheme } from "@/contexts/themeContext"
 
 const testimonials = [
   {
-    quote: "Outsoor reduced our AI infrastructure costs by 60% while improving response times by 3x. The unified API saved us weeks of integration work.",
+    quote: "Modelsnest reduced our AI infrastructure costs by 60% while improving response times by 3x. The unified API saved us weeks of integration work.",
     author: "Alex Rodriguez",
     role: "Lead Developer",
     company: "TechFlow",
@@ -183,7 +183,7 @@ export function Testimonials() {
               className="text-lg leading-relaxed"
               style={{ color: "var(--color-text-muted)" }}
             >
-              Thousands of developers and enterprises run production AI on Outsoor. Here's what they say.
+              Thousands of developers and enterprises run production AI on Modelsnest. Here's what they say.
             </motion.p>
           </div>
         </div>

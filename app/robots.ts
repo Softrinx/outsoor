@@ -26,7 +26,7 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: 'https://outsoor.com/sitemap.xml',
-    host: 'https://outsoor.com',
+    sitemap: 'https://Modelsnest.com/sitemap.xml',
+    host: 'https://Modelsnest.com',
   }
 }
