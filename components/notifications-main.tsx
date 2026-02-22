@@ -1,591 +1,368 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { getProfile, updateNotificationSettings } from "@/app/actions/settings"
-import { 
-  Bell, 
-  Mail, 
-  Smartphone, 
-  MessageSquare, 
-  Globe, 
-  Shield, 
-  CreditCard,
-  CheckCircle,
-  Clock,
-  Settings,
-  Volume2,
-  VolumeX
+import { useTheme } from "@/contexts/themeContext"
+import { useSidebar } from "@/components/dashboard-layout-controller"
+import {
+  Bell, Mail, Smartphone, MessageSquare, Globe,
+  Shield, CreditCard, CheckCircle, Clock, Zap,
+  Volume2, VolumeX, AlertCircle, Info,
 } from "lucide-react"
 import type { DashboardUser } from "@/types/dashboard-user"
 
-interface NotificationsMainProps {
-  user: DashboardUser
+interface NotificationsMainProps { user: DashboardUser }
+
+type NotificationUpdates = Parameters<typeof updateNotificationSettings>[0]
+
+// ── Reusable toggle ──────────────────────────────────────────────────────────
+function Toggle({ on, onChange, disabled }: { on: boolean; onChange: () => void; disabled?: boolean }) {
+  return (
+    <button
+      onClick={onChange}
+      disabled={disabled}
+      style={{
+        width: 44, height: 24, borderRadius: 12, padding: 2, border: "none",
+        cursor: disabled ? "not-allowed" : "pointer",
+        background: on ? "var(--color-primary)" : "rgba(128,128,128,0.25)",
+        transition: "background 0.2s",
+        flexShrink: 0, position: "relative",
+        opacity: disabled ? 0.5 : 1,
+      }}
+    >
+      <div style={{
+        width: 20, height: 20, borderRadius: "50%", background: "#fff",
+        position: "absolute", top: 2,
+        left: on ? 22 : 2,
+        transition: "left 0.2s",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.3)",
+      }} />
+    </button>
+  )
+}
+
+// ── Section wrapper ──────────────────────────────────────────────────────────
+function Section({ title, sub, icon: Icon, children, card, border, text, muted, color = "var(--color-primary)" }: any) {
+  return (
+    <div style={{ border: `1px solid ${border}`, overflow: "hidden" }}>
+      {/* Section header */}
+      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 20px",
+        borderBottom: `1px solid ${border}`, background: card }}>
+        <div style={{ width: 34, height: 34, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+          background: `color-mix(in srgb, ${color} 12%, transparent)`,
+          border: `1px solid color-mix(in srgb, ${color} 25%, transparent)` }}>
+          <Icon className="w-4 h-4" style={{ color }} />
+        </div>
+        <div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: text }}>{title}</div>
+          <div style={{ fontSize: 11, color: muted, marginTop: 1 }}>{sub}</div>
+        </div>
+      </div>
+      {children}
+    </div>
+  )
+}
+
+// ── Toggle row ───────────────────────────────────────────────────────────────
+function ToggleRow({ label, sub, value, onToggle, card, border, text, muted, indent = false }: any) {
+  return (
+    <div style={{
+      display: "flex", alignItems: "center", justifyContent: "space-between",
+      padding: indent ? "13px 20px 13px 52px" : "13px 20px",
+      background: card, borderBottom: `1px solid ${border}`,
+      gap: 16,
+    }}>
+      <div style={{ minWidth: 0 }}>
+        <div style={{ fontSize: 13, fontWeight: indent ? 500 : 600, color: text }}>{label}</div>
+        {sub && <div style={{ fontSize: 11, color: muted, marginTop: 2 }}>{sub}</div>}
+      </div>
+      <Toggle on={value} onChange={onToggle} />
+    </div>
+  )
 }
 
 export function NotificationsMain({ user }: NotificationsMainProps) {
-  type NotificationUpdates = Parameters<typeof updateNotificationSettings>[0]
+  const { isDark } = useTheme()
+  const { sidebarWidth, isMobile } = useSidebar()
 
-  const [notifications, setNotifications] = useState({
-    email: {
-      enabled: true,
-      marketing: false,
-      updates: true,
-      security: true,
-      billing: true
-    },
-    push: {
-      enabled: false,
-      chat: true,
-      updates: true,
-      security: true
-    },
-    inApp: {
-      enabled: true,
-      chat: true,
-      updates: true,
-      tips: false
-    }
+  const bg     = isDark ? "#0D0D0F" : "#f8f8f6"
+  const card   = isDark ? "#1A1B1F" : "#ffffff"
+  const card2  = isDark ? "#141416" : "#f4f4f2"
+  const border = isDark ? "#202126" : "#e2e2e0"
+  const text   = isDark ? "#ffffff" : "#0a0a0b"
+  const muted  = isDark ? "#71717a" : "#71717a"
+  const subtle = isDark ? "#52525b" : "#a1a1aa"
+
+  const headerPaddingLeft = isMobile ? 56 : sidebarWidth + 24
+
+  type Notifs = {
+    email:  { enabled: boolean; marketing: boolean; updates: boolean; security: boolean; billing: boolean }
+    push:   { enabled: boolean; chat: boolean; updates: boolean; security: boolean }
+    inApp:  { enabled: boolean; chat: boolean; updates: boolean; tips: boolean }
+  }
+
+  const [notifs, setNotifs] = useState<Notifs>({
+    email: { enabled: true, marketing: false, updates: true, security: true, billing: true },
+    push:  { enabled: false, chat: true, updates: true, security: true },
+    inApp: { enabled: true, chat: true, updates: true, tips: false },
   })
 
-  const [quietHours, setQuietHours] = useState({
-    enabled: false,
-    start: '22:00',
-    end: '08:00'
-  })
+  const [quiet, setQuiet] = useState({ enabled: false, start: "22:00", end: "08:00" })
+  const [toast, setToast] = useState<{ type: "success" | "error"; text: string } | null>(null)
+  const [loading, setLoading] = useState(false)
 
-  const [notificationHistory] = useState([
-    { id: 1, type: 'chat', message: 'New message from AI Assistant', time: '2 minutes ago', read: false },
-    { id: 2, type: 'security', message: 'Login from new device detected', time: '1 hour ago', read: true },
-    { id: 3, type: 'billing', message: 'Payment successful for Pro plan', time: '2 hours ago', read: true },
-    { id: 4, type: 'update', message: 'New features available', time: '1 day ago', read: true }
-  ])
-
-  const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const showToast = (type: "success" | "error", text: string) => {
+    setToast({ type, text })
+    setTimeout(() => setToast(null), 3000)
+  }
 
   useEffect(() => {
-    let isMounted = true
-
-    const loadProfile = async () => {
-      const result = await getProfile()
-
-      if (!isMounted) {
-        return
+    getProfile().then(r => {
+      if (r.success && r.data) {
+        const d = r.data
+        setNotifs({
+          email: { enabled: d.email_notifications, marketing: d.marketing_updates, updates: d.product_updates, security: d.security_alerts, billing: d.billing_notifications },
+          push:  { enabled: d.push_notifications, chat: d.chat_messages, updates: d.product_updates, security: d.security_push_alerts },
+          inApp: { enabled: d.in_app_notifications, chat: d.chat_notifications, updates: d.product_updates, tips: d.tips },
+        })
+        setQuiet({ enabled: d.quiet_hours, start: d.quiet_hours_start?.slice(0, 5) ?? "22:00", end: d.quiet_hours_end?.slice(0, 5) ?? "08:00" })
       }
-
-      if (result.success && result.data) {
-        setNotifications((prev) => ({
-          ...prev,
-          email: {
-            ...prev.email,
-            enabled: result.data.email_notifications,
-            security: result.data.security_alerts,
-            billing: result.data.billing_notifications,
-            updates: result.data.product_updates,
-            marketing: result.data.marketing_updates
-          },
-          push: {
-            ...prev.push,
-            enabled: result.data.push_notifications,
-            chat: result.data.chat_messages,
-            updates: result.data.product_updates,
-            security: result.data.security_push_alerts
-          },
-          inApp: {
-            ...prev.inApp,
-            enabled: result.data.in_app_notifications,
-            chat: result.data.chat_notifications,
-            updates: result.data.product_updates,
-            tips: result.data.tips
-          }
-        }))
-
-        setQuietHours((prev) => ({
-          ...prev,
-          enabled: result.data.quiet_hours,
-          start: result.data.quiet_hours_start.substring(0, 5),
-          end: result.data.quiet_hours_end.substring(0, 5)
-        }))
-      }
-    }
-
-    loadProfile()
-
-    return () => {
-      isMounted = false
-    }
+    })
   }, [])
 
-  const toggleNotification = async (category: string, subcategory: string) => {
-    setSaveMessage(null)
-
-    // Compute next value from current state
-    const current = (notifications[category as keyof typeof notifications] as any)[subcategory]
-    const nextValue = !current
-
-    setNotifications(prev => ({
-      ...prev,
-      [category]: {
-        ...prev[category as keyof typeof prev],
-        [subcategory]: nextValue
-      }
-    }))
-
-    const profileFieldMap: Record<string, Record<string, string>> = {
-      email: {
-        enabled: "email_notifications",
-        security: "security_alerts",
-        billing: "billing_notifications",
-        updates: "product_updates",
-        marketing: "marketing_updates"
-      },
-      push: {
-        enabled: "push_notifications",
-        chat: "chat_messages",
-        updates: "product_updates",
-        security: "security_push_alerts"
-      },
-      inApp: {
-        enabled: "in_app_notifications",
-        chat: "chat_notifications",
-        updates: "product_updates",
-        tips: "tips"
-      }
-    }
-
-    const profileField = profileFieldMap[category]?.[subcategory]
-
-    if (!profileField) {
-      return
-    }
-
-    const result = await updateNotificationSettings({ [profileField]: nextValue } as NotificationUpdates)
-
-    if (!result.success) {
-      setNotifications(prev => ({
-        ...prev,
-        [category]: {
-          ...prev[category as keyof typeof prev],
-          [subcategory]: !nextValue
-        }
-      }))
-      setSaveMessage({ type: 'error', text: result.error || 'Failed to update notifications' })
-      return
-    }
-
-    setSaveMessage({ type: 'success', text: 'Notification preferences updated' })
+  const FIELD_MAP: Record<string, Record<string, string>> = {
+    email: { enabled: "email_notifications", security: "security_alerts", billing: "billing_notifications", updates: "product_updates", marketing: "marketing_updates" },
+    push:  { enabled: "push_notifications", chat: "chat_messages", updates: "product_updates", security: "security_push_alerts" },
+    inApp: { enabled: "in_app_notifications", chat: "chat_notifications", updates: "product_updates", tips: "tips" },
   }
 
-  const toggleQuietHours = async () => {
-    setSaveMessage(null)
-
-    const nextEnabled = !quietHours.enabled
-    setQuietHours((prev) => ({ ...prev, enabled: nextEnabled }))
-
-    const result = await updateNotificationSettings({ quiet_hours: nextEnabled } as NotificationUpdates)
-
-    if (!result.success) {
-      setQuietHours((prev) => ({ ...prev, enabled: !nextEnabled }))
-      setSaveMessage({ type: 'error', text: result.error || 'Failed to update quiet hours' })
+  const toggle = async (cat: keyof Notifs, key: string) => {
+    const current = (notifs[cat] as any)[key]
+    const next = !current
+    setNotifs(p => ({ ...p, [cat]: { ...p[cat], [key]: next } }))
+    const field = FIELD_MAP[cat]?.[key]
+    if (!field) return
+    const r = await updateNotificationSettings({ [field]: next } as NotificationUpdates)
+    if (!r.success) {
+      setNotifs(p => ({ ...p, [cat]: { ...p[cat], [key]: current } }))
+      showToast("error", r.error ?? "Failed to update")
     } else {
-      setSaveMessage({ type: 'success', text: 'Quiet hours updated' })
+      showToast("success", "Preferences updated")
     }
   }
 
-  const handleQuietHoursChange = async (field: 'start' | 'end', value: string) => {
-    setSaveMessage(null)
-    const newQuietHours = { ...quietHours, [field]: value }
-    setQuietHours(newQuietHours)
-
-    const updates: any = {
-      [field === 'start' ? 'quiet_hours_start' : 'quiet_hours_end']: value
-    }
-
-    const result = await updateNotificationSettings(updates as NotificationUpdates)
-
-    if (!result.success) {
-      setQuietHours((prev) => ({ ...prev, [field]: quietHours[field] }))
-      setSaveMessage({ type: 'error', text: result.error || 'Failed to update quiet hours' })
-    }
+  const toggleQuiet = async () => {
+    const next = !quiet.enabled
+    setQuiet(p => ({ ...p, enabled: next }))
+    const r = await updateNotificationSettings({ quiet_hours: next } as NotificationUpdates)
+    if (!r.success) { setQuiet(p => ({ ...p, enabled: !next })); showToast("error", r.error ?? "Failed") }
+    else showToast("success", "Quiet hours updated")
   }
 
-  const markAsRead = (id: number) => {
-    // Handle mark as read logic
-    console.log('Marked as read:', id)
+  const changeQuietTime = async (field: "start" | "end", value: string) => {
+    const prev = quiet[field]
+    setQuiet(p => ({ ...p, [field]: value }))
+    const r = await updateNotificationSettings({ [field === "start" ? "quiet_hours_start" : "quiet_hours_end"]: value } as NotificationUpdates)
+    if (!r.success) { setQuiet(p => ({ ...p, [field]: prev })); showToast("error", r.error ?? "Failed") }
   }
 
-  const getNotificationIcon = (type: string) => {
-    switch (type) {
-      case 'chat': return <MessageSquare className="w-4 h-4 text-[#8C5CF7]" />
-      case 'security': return <Shield className="w-4 h-4 text-[#EF4444]" />
-      case 'billing': return <CreditCard className="w-4 h-4 text-[#4ADE80]" />
-      case 'update': return <Globe className="w-4 h-4 text-[#FACC15]" />
-      default: return <Bell className="w-4 h-4 text-[#A0A0A8]" />
-    }
+  const history = [
+    { id: 1, type: "chat",     msg: "AI Assistant completed your request",       time: "2 min ago",   read: false },
+    { id: 2, type: "security", msg: "New login from Chrome · Nairobi, KE",       time: "1 hr ago",    read: false },
+    { id: 3, type: "billing",  msg: "$100 credit added to your account",          time: "3 hrs ago",   read: true  },
+    { id: 4, type: "update",   msg: "DeepSeek V3 is now available",              time: "Yesterday",   read: true  },
+    { id: 5, type: "security", msg: "API key generated from dashboard",           time: "2 days ago",  read: true  },
+  ]
+
+  const histIcon = (t: string) => {
+    if (t === "chat")     return <MessageSquare className="w-3.5 h-3.5" style={{ color: "var(--color-primary)" }} />
+    if (t === "security") return <Shield        className="w-3.5 h-3.5" style={{ color: "#ef4444" }} />
+    if (t === "billing")  return <CreditCard    className="w-3.5 h-3.5" style={{ color: "#10b981" }} />
+    return                       <Globe         className="w-3.5 h-3.5" style={{ color: "#f59e0b" }} />
   }
+
+  const sharedRowProps = { card, border, text, muted }
 
   return (
-    <div className="flex-1 flex flex-col bg-gradient-to-br from-[#0D0D0F] via-[#121214] to-[#1A1B1F]">
-      {/* Header */}
-      <header className="p-6 border-b border-[#2D2D32] bg-[#1A1B1F]/80 backdrop-blur-sm">
-        <div className="max-w-4xl">
-          <h1 className="text-2xl font-bold text-white mb-2">Notifications</h1>
-          <p className="text-[#A0A0A8]">
-            Manage your notification preferences and stay informed about what matters to you.
-          </p>
-        </div>
-      </header>
+    <div style={{ minHeight: "100svh", background: bg }}>
 
-      {/* Notifications Content */}
-      <div className="flex-1 p-6 overflow-auto">
-        <div className="max-w-4xl mx-auto space-y-6">
-          {saveMessage && (
-            <div className={`p-4 rounded-lg border flex items-center gap-3 ${
-              saveMessage.type === 'success'
-                ? 'bg-green-500/10 border-green-500/30'
-                : 'bg-red-500/10 border-red-500/30'
-            }`}>
-              {saveMessage.type === 'success' ? (
-                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-              ) : (
-                <Shield className="w-5 h-5 text-red-400 flex-shrink-0" />
-              )}
-              <p className={saveMessage.type === 'success' ? 'text-green-300' : 'text-red-300'}>
-                {saveMessage.text}
-              </p>
+      {!isDark && (
+        <style>{`
+          input[type="time"] { background-color: #f4f4f2 !important; color: #0a0a0b !important; border-color: #e2e2e0 !important; }
+        `}</style>
+      )}
+
+      {/* ── FIXED HEADER ── */}
+      <div
+        className="fixed top-0 right-0 z-30 flex items-center justify-between gap-3"
+        style={{
+          left: 0, height: 56,
+          paddingLeft: headerPaddingLeft,
+          paddingRight: 20,
+          borderBottom: `1px solid ${border}`,
+          background: card,
+          transition: "padding-left 0.28s cubic-bezier(0.25,0.25,0,1)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ width: 32, height: 32, borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center",
+            background: "color-mix(in srgb, var(--color-primary) 12%, transparent)",
+            border: "1px solid color-mix(in srgb, var(--color-primary) 25%, transparent)" }}>
+            <Bell className="w-4 h-4" style={{ color: "var(--color-primary)" }} />
+          </div>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 800, color: text, letterSpacing: "-0.03em", lineHeight: 1 }}>Notifications</div>
+            <div style={{ fontSize: 11, color: muted, marginTop: 1 }}>Alerts & preferences</div>
+          </div>
+        </div>
+
+        {/* Unread badge */}
+        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "5px 12px",
+          background: "color-mix(in srgb, var(--color-primary) 8%, transparent)",
+          border: "1px solid color-mix(in srgb, var(--color-primary) 20%, transparent)",
+          borderRadius: 8 }}>
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--color-primary)" }} />
+          <span style={{ fontSize: 12, fontWeight: 700, color: "var(--color-primary)" }}>
+            {history.filter(h => !h.read).length} unread
+          </span>
+        </div>
+      </div>
+
+      {/* ── BODY ── */}
+      <div style={{ paddingTop: 56 }}>
+        <div style={{ maxWidth: 720, margin: "0 auto", padding: "32px 20px", display: "flex", flexDirection: "column", gap: 24 }}>
+
+          {/* Page title */}
+          <div>
+            <h1 style={{ fontSize: "clamp(1.3rem,3vw,1.8rem)", fontWeight: 900, color: text, letterSpacing: "-0.04em", lineHeight: 1, marginBottom: 6 }}>
+              Notification settings
+            </h1>
+            <p style={{ fontSize: 13, color: muted }}>Choose how and when you hear from Outsoor.</p>
+          </div>
+
+          {/* Toast */}
+          {toast && (
+            <div style={{
+              display: "flex", alignItems: "center", gap: 10, padding: "12px 16px",
+              background: toast.type === "success" ? "rgba(16,185,129,0.08)" : "rgba(239,68,68,0.08)",
+              border: `1px solid ${toast.type === "success" ? "rgba(16,185,129,0.25)" : "rgba(239,68,68,0.25)"}`,
+            }}>
+              {toast.type === "success"
+                ? <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ color: "#10b981" }} />
+                : <AlertCircle className="w-4 h-4 flex-shrink-0" style={{ color: "#ef4444" }} />}
+              <span style={{ fontSize: 13, color: toast.type === "success" ? "#10b981" : "#ef4444" }}>{toast.text}</span>
             </div>
           )}
-          
-          {/* Email Notifications */}
-          <Card className="bg-[#1A1B1F] border-[#2D2D32]">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Mail className="w-5 h-5" />
-                Email Notifications
-              </CardTitle>
-              <CardDescription className="text-[#A0A0A8]">
-                Control which emails you receive from us.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-[#2D2D32] rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-[#8C5CF7]" />
-                  <div>
-                    <h4 className="text-white font-medium">Email Notifications</h4>
-                    <p className="text-[#A0A0A8] text-sm">Receive notifications via email</p>
-                  </div>
-                </div>
-                <Button
-                  onClick={() => toggleNotification('email', 'enabled')}
-                  variant={notifications.email.enabled ? "default" : "outline"}
-                  size="sm"
-                  className={notifications.email.enabled ? "bg-[#8C5CF7]" : "border-[#2D2D32] text-[#A0A0A8]"}
-                >
-                  {notifications.email.enabled ? "On" : "Off"}
-                </Button>
-              </div>
-              
-              {notifications.email.enabled && (
-                <div className="space-y-3 pl-8">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h5 className="text-white text-sm">Security Alerts</h5>
-                      <p className="text-[#A0A0A8] text-xs">Important security notifications</p>
-                    </div>
-                    <Button
-                      onClick={() => toggleNotification('email', 'security')}
-                      variant={notifications.email.security ? "default" : "outline"}
-                      size="sm"
-                      className={notifications.email.security ? "bg-[#4ADE80]" : "border-[#2D2D32] text-[#A0A0A8]"}
-                    >
-                      {notifications.email.security ? "On" : "Off"}
-                    </Button>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h5 className="text-white text-sm">Billing Updates</h5>
-                      <p className="text-[#A0A0A8] text-xs">Payment confirmations and invoices</p>
-                    </div>
-                    <Button
-                      onClick={() => toggleNotification('email', 'billing')}
-                      variant={notifications.email.billing ? "default" : "outline"}
-                      size="sm"
-                      className={notifications.email.billing ? "bg-[#4ADE80]" : "border-[#2D2D32] text-[#A0A0A8]"}
-                    >
-                      {notifications.email.billing ? "On" : "Off"}
-                    </Button>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h5 className="text-white text-sm">Product Updates</h5>
-                      <p className="text-[#A0A0A8] text-xs">New features and improvements</p>
-                    </div>
-                    <Button
-                      onClick={() => toggleNotification('email', 'updates')}
-                      variant={notifications.email.updates ? "default" : "outline"}
-                      size="sm"
-                      className={notifications.email.updates ? "bg-[#4ADE80]" : "border-[#2D2D32] text-[#A0A0A8]"}
-                    >
-                      {notifications.email.updates ? "On" : "Off"}
-                    </Button>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h5 className="text-white text-sm">Marketing</h5>
-                      <p className="text-[#A0A0A8] text-xs">Promotional content and offers</p>
-                    </div>
-                    <Button
-                      onClick={() => toggleNotification('email', 'marketing')}
-                      variant={notifications.email.marketing ? "default" : "outline"}
-                      size="sm"
-                      className={notifications.email.marketing ? "bg-[#4ADE80]" : "border-[#2D2D32] text-[#A0A0A8]"}
-                    >
-                      {notifications.email.marketing ? "On" : "Off"}
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
 
-          {/* Push Notifications */}
-          <Card className="bg-[#1A1B1F] border-[#2D2D32]">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Smartphone className="w-5 h-5" />
-                Push Notifications
-              </CardTitle>
-              <CardDescription className="text-[#A0A0A8]">
-                Control push notifications on your devices.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-[#2D2D32] rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Smartphone className="w-5 h-5 text-[#8C5CF7]" />
-                  <div>
-                    <h4 className="text-white font-medium">Push Notifications</h4>
-                    <p className="text-[#A0A0A8] text-sm">Receive notifications on your devices</p>
-                  </div>
-                </div>
-                <Button
-                  onClick={() => toggleNotification('push', 'enabled')}
-                  variant={notifications.push.enabled ? "default" : "outline"}
-                  size="sm"
-                  className={notifications.push.enabled ? "bg-[#8C5CF7]" : "border-[#2D2D32] text-[#A0A0A8]"}
-                >
-                  {notifications.push.enabled ? "On" : "Off"}
-                </Button>
-              </div>
-              
-              {notifications.push.enabled && (
-                <div className="space-y-3 pl-8">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h5 className="text-white text-sm">Chat Messages</h5>
-                      <p className="text-[#A0A0A8] text-xs">New messages from AI Assistant</p>
-                    </div>
-                    <Button
-                      onClick={() => toggleNotification('push', 'chat')}
-                      variant={notifications.push.chat ? "default" : "outline"}
-                      size="sm"
-                      className={notifications.push.chat ? "bg-[#4ADE80]" : "border-[#2D2D32] text-[#A0A0A8]"}
-                    >
-                      {notifications.push.chat ? "On" : "Off"}
-                    </Button>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h5 className="text-white text-sm">Security Alerts</h5>
-                      <p className="text-[#A0A0A8] text-xs">Important security notifications</p>
-                    </div>
-                    <Button
-                      onClick={() => toggleNotification('push', 'security')}
-                      variant={notifications.push.security ? "default" : "outline"}
-                      size="sm"
-                      className={notifications.push.security ? "bg-[#4ADE80]" : "border-[#2D2D32] text-[#A0A0A8]"}
-                    >
-                      {notifications.push.security ? "On" : "Off"}
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          {/* ── EMAIL ── */}
+          <Section title="Email notifications" sub="Control which emails you receive" icon={Mail} {...sharedRowProps} color="#6366f1">
+            <ToggleRow label="Email notifications" sub="Master toggle for all email delivery" value={notifs.email.enabled} onToggle={() => toggle("email","enabled")} {...sharedRowProps} />
+            {notifs.email.enabled && <>
+              <ToggleRow indent label="Security alerts" sub="Login attempts, API key changes" value={notifs.email.security} onToggle={() => toggle("email","security")} {...sharedRowProps} />
+              <ToggleRow indent label="Billing updates" sub="Payment receipts and invoices" value={notifs.email.billing} onToggle={() => toggle("email","billing")} {...sharedRowProps} />
+              <ToggleRow indent label="Product updates" sub="New features and improvements" value={notifs.email.updates} onToggle={() => toggle("email","updates")} {...sharedRowProps} />
+              <ToggleRow indent label="Marketing" sub="Promotions and special offers" value={notifs.email.marketing} onToggle={() => toggle("email","marketing")} {...sharedRowProps} />
+            </>}
+          </Section>
 
-          {/* In-App Notifications */}
-          <Card className="bg-[#1A1B1F] border-[#2D2D32]">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Bell className="w-5 h-5" />
-                In-App Notifications
-              </CardTitle>
-              <CardDescription className="text-[#A0A0A8]">
-                Control notifications that appear within the application.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-[#2D2D32] rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Bell className="w-5 h-5 text-[#8C5CF7]" />
-                  <div>
-                    <h4 className="text-white font-medium">In-App Notifications</h4>
-                    <p className="text-[#A0A0A8] text-sm">Show notifications within the app</p>
-                  </div>
-                </div>
-                <Button
-                  onClick={() => toggleNotification('inApp', 'enabled')}
-                  variant={notifications.inApp.enabled ? "default" : "outline"}
-                  size="sm"
-                  className={notifications.inApp.enabled ? "bg-[#8C5CF7]" : "border-[#2D2D32] text-[#A0A0A8]"}
-                >
-                  {notifications.inApp.enabled ? "On" : "Off"}
-                </Button>
-              </div>
-              
-              {notifications.inApp.enabled && (
-                <div className="space-y-3 pl-8">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h5 className="text-white text-sm">Chat Notifications</h5>
-                      <p className="text-[#A0A0A8] text-xs">Show chat-related notifications</p>
-                    </div>
-                    <Button
-                      onClick={() => toggleNotification('inApp', 'chat')}
-                      variant={notifications.inApp.chat ? "default" : "outline"}
-                      size="sm"
-                      className={notifications.inApp.chat ? "bg-[#4ADE80]" : "border-[#2D2D32] text-[#A0A0A8]"}
-                    >
-                      {notifications.inApp.chat ? "On" : "Off"}
-                    </Button>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h5 className="text-white text-sm">Tips & Hints</h5>
-                      <p className="text-[#A0A0A8] text-xs">Show helpful tips and suggestions</p>
-                    </div>
-                    <Button
-                      onClick={() => toggleNotification('inApp', 'tips')}
-                      variant={notifications.inApp.tips ? "default" : "outline"}
-                      size="sm"
-                      className={notifications.inApp.tips ? "bg-[#4ADE80]" : "border-[#2D2D32] text-[#A0A0A8]"}
-                    >
-                      {notifications.inApp.tips ? "On" : "Off"}
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          {/* ── PUSH ── */}
+          <Section title="Push notifications" sub="Alerts on your mobile and desktop devices" icon={Smartphone} {...sharedRowProps} color="#8b5cf6">
+            <ToggleRow label="Push notifications" sub="Master toggle for all push delivery" value={notifs.push.enabled} onToggle={() => toggle("push","enabled")} {...sharedRowProps} />
+            {notifs.push.enabled && <>
+              <ToggleRow indent label="Chat messages" sub="New AI responses and completions" value={notifs.push.chat} onToggle={() => toggle("push","chat")} {...sharedRowProps} />
+              <ToggleRow indent label="Security alerts" sub="Suspicious activity detected" value={notifs.push.security} onToggle={() => toggle("push","security")} {...sharedRowProps} />
+              <ToggleRow indent label="Product updates" sub="New models and features" value={notifs.push.updates} onToggle={() => toggle("push","updates")} {...sharedRowProps} />
+            </>}
+          </Section>
 
-          {/* Quiet Hours */}
-          <Card className="bg-[#1A1B1F] border-[#2D2D32]">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Clock className="w-5 h-5" />
-                Quiet Hours
-              </CardTitle>
-              <CardDescription className="text-[#A0A0A8]">
-                Set specific times when you don't want to receive notifications.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-[#2D2D32] rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-[#8C5CF7]" />
-                  <div>
-                    <h4 className="text-white font-medium">Quiet Hours</h4>
-                    <p className="text-[#A0A0A8] text-sm">Pause notifications during specific hours</p>
-                  </div>
-                </div>
-                <Button
-                  onClick={toggleQuietHours}
-                  variant={quietHours.enabled ? "default" : "outline"}
-                  size="sm"
-                  className={quietHours.enabled ? "bg-[#8C5CF7]" : "border-[#2D2D32] text-[#A0A0A8]"}
-                >
-                  {quietHours.enabled ? "On" : "Off"}
-                </Button>
-              </div>
-              
-              {quietHours.enabled && (
-                <div className="grid grid-cols-2 gap-4 pl-8">
-                  <div>
-                    <label className="text-sm font-medium text-white">Start Time</label>
+          {/* ── IN-APP ── */}
+          <Section title="In-app notifications" sub="What appears inside the dashboard" icon={Bell} {...sharedRowProps} color="#06b6d4">
+            <ToggleRow label="In-app notifications" sub="Master toggle for all in-app alerts" value={notifs.inApp.enabled} onToggle={() => toggle("inApp","enabled")} {...sharedRowProps} />
+            {notifs.inApp.enabled && <>
+              <ToggleRow indent label="Chat activity" sub="Message completions and errors" value={notifs.inApp.chat} onToggle={() => toggle("inApp","chat")} {...sharedRowProps} />
+              <ToggleRow indent label="Product updates" sub="Release notes and changelogs" value={notifs.inApp.updates} onToggle={() => toggle("inApp","updates")} {...sharedRowProps} />
+              <ToggleRow indent label="Tips & hints" sub="Contextual usage suggestions" value={notifs.inApp.tips} onToggle={() => toggle("inApp","tips")} {...sharedRowProps} />
+            </>}
+          </Section>
+
+          {/* ── QUIET HOURS ── */}
+          <Section title="Quiet hours" sub="Pause all non-critical notifications on a schedule" icon={Clock} {...sharedRowProps} color="#f59e0b">
+            <ToggleRow label="Enable quiet hours" sub="Mute notifications during selected times" value={quiet.enabled} onToggle={toggleQuiet} {...sharedRowProps} />
+            {quiet.enabled && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1, background: border, borderTop: `1px solid ${border}` }}>
+                {(["start","end"] as const).map(f => (
+                  <div key={f} style={{ background: card, padding: "16px 20px" }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: muted, marginBottom: 8 }}>
+                      {f === "start" ? "Start time" : "End time"}
+                    </div>
                     <input
                       type="time"
-                      value={quietHours.start}
-                      onChange={(e) => handleQuietHoursChange('start', e.target.value)}
-                      className="mt-1 w-full bg-[#2D2D32] border border-[#3D3D42] text-white rounded px-3 py-2"
+                      value={quiet[f]}
+                      onChange={e => changeQuietTime(f, e.target.value)}
+                      style={{
+                        width: "100%", padding: "8px 10px", fontSize: 14, fontWeight: 700,
+                        fontFamily: "monospace", color: text,
+                        background: card2, border: `1px solid ${border}`,
+                        outline: "none", borderRadius: 0,
+                      }}
                     />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-white">End Time</label>
-                    <input
-                      type="time"
-                      value={quietHours.end}
-                      onChange={(e) => handleQuietHoursChange('end', e.target.value)}
-                      className="mt-1 w-full bg-[#2D2D32] border border-[#3D3D42] text-white rounded px-3 py-2"
-                    />
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Recent Notifications */}
-          <Card className="bg-[#1A1B1F] border-[#2D2D32]">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Bell className="w-5 h-5" />
-                Recent Notifications
-              </CardTitle>
-              <CardDescription className="text-[#A0A0A8]">
-                View your recent notification history.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {notificationHistory.map((notification) => (
-                  <div key={notification.id} className={`flex items-center justify-between p-3 rounded-lg border ${
-                    notification.read 
-                      ? 'bg-[#2D2D32] border-[#3D3D42]' 
-                      : 'bg-[#1A1B1F] border-[#8C5CF7]'
-                  }`}>
-                    <div className="flex items-center gap-3">
-                      {getNotificationIcon(notification.type)}
-                      <div>
-                        <p className={`font-medium text-sm ${notification.read ? 'text-[#A0A0A8]' : 'text-white'}`}>
-                          {notification.message}
-                        </p>
-                        <p className="text-[#8C8C96] text-xs">{notification.time}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {!notification.read && (
-                        <div className="w-2 h-2 bg-[#8C5CF7] rounded-full" />
-                      )}
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => markAsRead(notification.id)}
-                        className="text-[#A0A0A8] hover:text-white hover:bg-[#2D2D32]"
-                      >
-                        <CheckCircle className="w-4 h-4" />
-                      </Button>
-                    </div>
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            )}
+          </Section>
+
+          {/* ── RECENT NOTIFICATIONS ── */}
+          <div style={{ border: `1px solid ${border}`, overflow: "hidden" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between",
+              padding: "16px 20px", borderBottom: `1px solid ${border}`, background: card }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 34, height: 34, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center",
+                  background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)" }}>
+                  <Zap className="w-4 h-4" style={{ color: "#6366f1" }} />
+                </div>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: text }}>Recent activity</div>
+                  <div style={{ fontSize: 11, color: muted, marginTop: 1 }}>Your notification history</div>
+                </div>
+              </div>
+              <button style={{ fontSize: 11, color: "var(--color-primary)", fontWeight: 600, background: "none", border: "none", cursor: "pointer" }}>
+                Mark all read
+              </button>
+            </div>
+
+            {history.map((n, i) => (
+              <div key={n.id} style={{
+                display: "flex", alignItems: "center", gap: 12, padding: "14px 20px",
+                background: n.read ? card : isDark ? "rgba(99,102,241,0.04)" : "rgba(99,102,241,0.02)",
+                borderBottom: i < history.length - 1 ? `1px solid ${border}` : "none",
+                borderLeft: !n.read ? "2px solid var(--color-primary)" : "2px solid transparent",
+              }}>
+                {/* Icon */}
+                <div style={{ width: 30, height: 30, borderRadius: 7, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center",
+                  background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)", border: `1px solid ${border}` }}>
+                  {histIcon(n.type)}
+                </div>
+                {/* Text */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 12, fontWeight: n.read ? 400 : 600, color: n.read ? muted : text,
+                    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{n.msg}</div>
+                  <div style={{ fontSize: 11, color: subtle, marginTop: 2 }}>{n.time}</div>
+                </div>
+                {/* Unread dot */}
+                {!n.read && <div style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--color-primary)", flexShrink: 0 }} />}
+              </div>
+            ))}
+          </div>
+
+          {/* Info note */}
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "12px 0" }}>
+            <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: subtle }} />
+            <span style={{ fontSize: 11, color: subtle, lineHeight: 1.6 }}>
+              Critical security notifications are always delivered regardless of your preferences. Changes take effect immediately.
+            </span>
+          </div>
+
         </div>
       </div>
     </div>
