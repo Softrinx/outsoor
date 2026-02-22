@@ -77,12 +77,13 @@ type ProfileRow = {
   bio: string | null
   location: string | null
   dark_theme: boolean
+  profile_image: string | null
 }
 
 type ProfileNotificationUpdates = Partial<Omit<ProfileRow, "id">>
 
 const profileSelectFields =
-  "id, email_notifications, push_notifications, security_alerts, billing_notifications, product_updates, marketing_updates, chat_messages, security_push_alerts, in_app_notifications, chat_notifications, tips, quiet_hours, quiet_hours_start, quiet_hours_end, bio, location, dark_theme"
+  "id, email_notifications, push_notifications, security_alerts, billing_notifications, product_updates, marketing_updates, chat_messages, security_push_alerts, in_app_notifications, chat_notifications, tips, quiet_hours, quiet_hours_start, quiet_hours_end, bio, location, dark_theme, profile_image"
 
 export async function getProfile() {
   const supabase = await createClient()
@@ -174,6 +175,84 @@ export async function changePassword(formData: FormData) {
   } catch (error) {
     console.error("Password change error:", error)
     return { success: false, error: "Failed to change password" }
+  }
+}
+
+export async function uploadProfileImage(formData: FormData) {
+  const supabase = await createClient()
+  const { data: { user }, error: userError } = await supabase.auth.getUser()
+
+  if (userError || !user) {
+    return { success: false, error: "Not authenticated" }
+  }
+
+  try {
+    const file = formData.get("file") as File
+
+    if (!file) {
+      return { success: false, error: "No file selected" }
+    }
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      return { success: false, error: "Please upload an image file" }
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      return { success: false, error: "Image must be less than 5MB" }
+    }
+
+    // Generate unique filename
+    const extension = file.type.split("/")[1] || "jpg"
+    const timestamp = Date.now()
+    const filename = `${user.id}/profile-${timestamp}.${extension}`
+
+    // Delete old image if it exists
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("profile_image")
+      .eq("id", user.id)
+      .single()
+
+    if (profile?.profile_image) {
+      await supabase.storage
+        .from("profile_images")
+        .remove([profile.profile_image])
+    }
+
+    // Upload new image
+    const { error: uploadError } = await supabase.storage
+      .from("profile_images")
+      .upload(filename, file, { upsert: false })
+
+    if (uploadError) {
+      return { success: false, error: `Upload failed: ${uploadError.message}` }
+    }
+
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from("profile_images")
+      .getPublicUrl(filename)
+
+    // Update profile with image path
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .update({ profile_image: filename })
+      .eq("id", user.id)
+
+    if (profileError) {
+      return { success: false, error: `Failed to update profile: ${profileError.message}` }
+    }
+
+    return { 
+      success: true, 
+      message: "Profile image updated successfully",
+      data: { profile_image: filename, url: publicUrl }
+    }
+  } catch (error) {
+    console.error("Profile image upload error:", error)
+    return { success: false, error: "Failed to upload profile image" }
   }
 }
 

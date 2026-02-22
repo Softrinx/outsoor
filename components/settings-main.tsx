@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { updateUserProfile, changePassword, logoutUser, getProfile, updateNotificationSettings } from "@/app/actions/settings"
+import { useState, useEffect, useRef } from "react"
+import { updateUserProfile, changePassword, logoutUser, getProfile, updateNotificationSettings, uploadProfileImage } from "@/app/actions/settings"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -32,7 +32,8 @@ export function SettingsMain({ user }: SettingsMainProps) {
   const [profileData, setProfileData] = useState({
     name: user.user_metadata?.name || user.name || '',
     bio: '',
-    location: ''
+    location: '',
+    profile_image: ''
   })
 
   const [passwordData, setPasswordData] = useState({
@@ -80,6 +81,11 @@ export function SettingsMain({ user }: SettingsMainProps) {
   const [profileMessage, setProfileMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [passwordMessage, setPasswordMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
+  const [isLoadingImage, setIsLoadingImage] = useState(false)
+  const [imageMessage, setImageMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [profileImageUrl, setProfileImageUrl] = useState<string>('')
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   useEffect(() => {
     let isMounted = true
 
@@ -94,8 +100,16 @@ export function SettingsMain({ user }: SettingsMainProps) {
         setProfileData((prev) => ({
           ...prev,
           bio: result.data.bio || '',
-          location: result.data.location || ''
+          location: result.data.location || '',
+          profile_image: result.data.profile_image || ''
         }))
+
+        // Set profile image URL if available
+        if (result.data.profile_image) {
+          // Construct the public URL for the image
+          const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/profile_images/${result.data.profile_image}`
+          setProfileImageUrl(imageUrl)
+        }
 
         setNotifications((prev) => ({
           ...prev,
@@ -196,6 +210,42 @@ export function SettingsMain({ user }: SettingsMainProps) {
     } catch (error) {
       setIsLoadingLogout(false)
     }
+  }
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setIsLoadingImage(true)
+    setImageMessage(null)
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const result = await uploadProfileImage(formData)
+
+      if (result.success && result.data) {
+        const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/profile_images/${result.data.profile_image}`
+        setProfileImageUrl(imageUrl)
+        setProfileData((prev) => ({ ...prev, profile_image: result.data.profile_image }))
+        setImageMessage({ type: 'success', text: result.message || 'Profile image updated successfully' })
+      } else {
+        setImageMessage({ type: 'error', text: result.error || 'Failed to upload image' })
+      }
+    } catch (error) {
+      setImageMessage({ type: 'error', text: 'An unexpected error occurred' })
+    } finally {
+      setIsLoadingImage(false)
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
+
+  const handleImageButtonClick = () => {
+    fileInputRef.current?.click()
   }
 
   const handleNotificationToggle = async (category: string, subcategory: string) => {
@@ -383,18 +433,56 @@ export function SettingsMain({ user }: SettingsMainProps) {
                   {/* Avatar Section */}
                   <div className="flex items-center gap-4">
                     <div className="relative">
-                      <div className="w-20 h-20 bg-gradient-to-br from-[#8C5CF7] to-[#3B1F82] rounded-full flex items-center justify-center">
-                        <span className="text-white font-semibold text-2xl">{(user.user_metadata?.name || user.name || 'U')?.[0]?.toUpperCase()}</span>
-                      </div>
-                      <Button size="sm" className="absolute -bottom-1 -right-1 w-8 h-8 p-0 rounded-full bg-[#2D2D32] border border-[#3D3D42] hover:bg-[#3D3D42]">
+                      {profileImageUrl ? (
+                        <img 
+                          src={profileImageUrl} 
+                          alt="Profile" 
+                          className="w-20 h-20 rounded-full object-cover border-2 border-[#8C5CF7]"
+                        />
+                      ) : (
+                        <div className="w-20 h-20 bg-gradient-to-br from-[#8C5CF7] to-[#3B1F82] rounded-full flex items-center justify-center">
+                          <span className="text-white font-semibold text-2xl">{(user.user_metadata?.name || user.name || 'U')?.[0]?.toUpperCase()}</span>
+                        </div>
+                      )}
+                      <Button 
+                        size="sm" 
+                        onClick={handleImageButtonClick}
+                        disabled={isLoadingImage}
+                        className="absolute -bottom-1 -right-1 w-8 h-8 p-0 rounded-full bg-[#2D2D32] border border-[#3D3D42] hover:bg-[#3D3D42]"
+                      >
                         <Camera className="w-4 h-4" />
                       </Button>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
                     </div>
                     <div>
                       <h3 className="text-white font-medium">{user.user_metadata?.name || user.name || 'User'}</h3>
                       <p className="text-[#A0A0A8] text-sm">{user.email}</p>
                     </div>
                   </div>
+
+                  {/* Image Upload Message */}
+                  {imageMessage && (
+                    <div className={`p-4 rounded-lg border flex items-center gap-3 ${
+                      imageMessage.type === 'success' 
+                        ? 'bg-green-500/10 border-green-500/30' 
+                        : 'bg-red-500/10 border-red-500/30'
+                    }`}>
+                      {imageMessage.type === 'success' ? (
+                        <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                      ) : (
+                        <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+                      )}
+                      <p className={imageMessage.type === 'success' ? 'text-green-300' : 'text-red-300'}>
+                        {imageMessage.text}
+                      </p>
+                    </div>
+                  )}
 
                   {/* Form Fields */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
