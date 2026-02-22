@@ -22,9 +22,9 @@ export default function SDKsPage() {
       color: "bg-blue-500",
       features: ["Async support", "Type hints", "Full API coverage", "Examples included"],
       requirements: "Python 3.8+",
-      installCommand: "pip install outsoor",
+      installCommand: "pip install Modelsnest",
       documentation: "/docs/python",
-      github: "https://github.com/outsoor/outsoor-python"
+      github: "https://github.com/Modelsnest/Modelsnest-python"
     },
     {
       name: "JavaScript",
@@ -37,9 +37,9 @@ export default function SDKsPage() {
       color: "bg-yellow-500",
       features: ["TypeScript support", "Browser compatible", "Streaming support", "Tree-shaking"],
       requirements: "Node.js 16+",
-      installCommand: "npm install outsoor",
+      installCommand: "npm install Modelsnest",
       documentation: "/docs/javascript",
-      github: "https://github.com/outsoor/outsoor-js"
+      github: "https://github.com/Modelsnest/Modelsnest-js"
     },
     {
       name: "Java",
@@ -52,9 +52,9 @@ export default function SDKsPage() {
       color: "bg-orange-500",
       features: ["Spring Boot support", "Reactive streams", "Comprehensive tests", "Maven/Gradle"],
       requirements: "Java 11+",
-      installCommand: "mvn install outsoor-java",
+      installCommand: "mvn install Modelsnest-java",
       documentation: "/docs/java",
-      github: "https://github.com/outsoor/outsoor-java"
+      github: "https://github.com/Modelsnest/Modelsnest-java"
     },
     {
       name: "C#",
@@ -67,9 +67,9 @@ export default function SDKsPage() {
       color: "bg-purple-500",
       features: [".NET 6+ support", "Dependency injection", "Logging integration", "NuGet package"],
       requirements: ".NET 6.0+",
-      installCommand: "dotnet add package Outsoor",
+      installCommand: "dotnet add package Modelsnest",
       documentation: "/docs/csharp",
-      github: "https://github.com/outsoor/outsoor-dotnet"
+      github: "https://github.com/Modelsnest/Modelsnest-dotnet"
     },
     {
       name: "Go",
@@ -82,9 +82,9 @@ export default function SDKsPage() {
       color: "bg-cyan-500",
       features: ["Context support", "Middleware system", "High performance", "Go modules"],
       requirements: "Go 1.19+",
-      installCommand: "go get github.com/outsoor/outsoor-go",
+      installCommand: "go get github.com/Modelsnest/Modelsnest-go",
       documentation: "/docs/go",
-      github: "https://github.com/outsoor/outsoor-go"
+      github: "https://github.com/Modelsnest/Modelsnest-go"
     },
     {
       name: "PHP",
@@ -97,17 +97,17 @@ export default function SDKsPage() {
       color: "bg-indigo-500",
       features: ["PSR standards", "Composer support", "Laravel integration", "Async support"],
       requirements: "PHP 8.0+",
-      installCommand: "composer require outsoor/outsoor-php",
+      installCommand: "composer require Modelsnest/Modelsnest-php",
       documentation: "/docs/php",
-      github: "https://github.com/outsoor/outsoor-php"
+      github: "https://github.com/Modelsnest/Modelsnest-php"
     }
   ]
 
   const codeExamples = {
-    python: `import outsoor
+    python: `import Modelsnest
 
 # Initialize the client
-client = outsoor.Client(api_key="your-api-key")
+client = Modelsnest.Client(api_key="your-api-key")
 
 # Create a chat completion
 response = client.chat.completions.create(
@@ -119,10 +119,10 @@ response = client.chat.completions.create(
 
 print(response.choices[0].message.content)`,
     
-    javascript: `import { Outsoor } from 'outsoor';
+    javascript: `import { Modelsnest } from 'Modelsnest';
 
 // Initialize the client
-const client = new Outsoor({
+const client = new Modelsnest({
   apiKey: 'your-api-key',
 });
 
@@ -136,11 +136,11 @@ const response = await client.chat.completions.create({
 
 console.log(response.choices[0].message.content);`,
     
-    java: `import com.outsoor.OutsoorClient;
-import com.outsoor.models.ChatCompletionRequest;
+    java: `import com.Modelsnest.ModelsnestClient;
+import com.Modelsnest.models.ChatCompletionRequest;
 
 // Initialize the client
-OutsoorClient client = new OutsoorClient("your-api-key");
+ModelsnestClient client = new ModelsnestClient("your-api-key");
 
 // Create a chat completion
 ChatCompletionRequest request = ChatCompletionRequest.builder()
@@ -169,7 +169,7 @@ System.out.println(response.getChoices().get(0).getMessage().getContent());`
           <div className="text-center">
             <h1 className="text-4xl font-bold text-foreground mb-4">Software Development Kits</h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Official and community SDKs to help you integrate Outsoor APIs into your applications quickly and easily.
+              Official and community SDKs to help you integrate Modelsnest APIs into your applications quickly and easily.
             </p>
             
             {/* Search Bar */}

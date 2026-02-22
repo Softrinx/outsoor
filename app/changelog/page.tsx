@@ -82,8 +82,8 @@ const releases: Release[] = [
     icon: Package,
     accent: "#8b5cf6",
     changes: [
-      { type: "new",      text: "Official Python SDK v1.2.0 — `pip install outsoor`. Async-first, full type hints, streaming support built in." },
-      { type: "new",      text: "Official Node.js SDK v2.1.0 — `npm install outsoor`. Works in both ESM and CJS environments." },
+      { type: "new",      text: "Official Python SDK v1.2.0 — `pip install Modelsnest`. Async-first, full type hints, streaming support built in." },
+      { type: "new",      text: "Official Node.js SDK v2.1.0 — `npm install Modelsnest`. Works in both ESM and CJS environments." },
       { type: "new",      text: "Go, PHP, Java, and C# SDKs released as open-source under MIT license. Contributions welcome." },
       { type: "new",      text: "SDK documentation section added to the platform with install commands, quickstarts, and API reference per language." },
       { type: "improved", text: "All SDKs share a consistent interface — same method names, same error shapes, same response types across languages." },
@@ -299,7 +299,7 @@ export default function ChangelogPage() {
             </div>
             <h1 className="font-black leading-tight"
               style={{ fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-0.04em", color: "var(--color-text)" }}>
-              What's new in Outsoor.
+              What's new in Modelsnest.
             </h1>
             <p className="text-sm max-w-md" style={{ color: "var(--color-text-muted)", lineHeight: 1.8 }}>
               Every API addition, model release, SDK update, bug fix, and security patch — in one place. Updated with each release.
@@ -403,7 +403,7 @@ export default function ChangelogPage() {
       <div className="flex items-center justify-between px-6 text-xs font-mono flex-shrink-0"
         style={{ height: "24px", background: "var(--color-primary)", color: "#fff" }}>
         <div className="flex items-center gap-5">
-          <span>Outsoor Changelog</span>
+          <span>Modelsnest Changelog</span>
           <span style={{ opacity: 0.7 }}>Latest: v2.4.0 — Feb 14, 2025</span>
         </div>
         <div className="flex items-center gap-4" style={{ opacity: 0.8 }}>

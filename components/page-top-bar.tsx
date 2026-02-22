@@ -11,7 +11,7 @@ interface PageTopBarProps {
 }
 
 export function PageTopBar({
-  backLabel = "Back to Outsoor",
+  backLabel = "Back to Modelsnest",
   backHref = "/",
   breadcrumb,
 }: PageTopBarProps) {

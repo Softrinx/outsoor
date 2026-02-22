@@ -32,7 +32,7 @@ const roles = [
     department: "Engineering",
     location: "Remote",
     description:
-      "Help design and build the core dashboard and developer experience for Outsoor customers, from onboarding flows to usage analytics.",
+      "Help design and build the core dashboard and developer experience for Modelsnest customers, from onboarding flows to usage analytics.",
   },
   {
     title: "Senior Infrastructure Engineer",
@@ -220,11 +220,11 @@ export default function CareersPage() {
             </span>
           </div>
           <Link
-            href="mailto:careers@outsoor.com"
+            href="mailto:careers@Modelsnest.com"
             className="flex items-center gap-2 px-5 py-3 text-sm font-semibold transition-opacity hover:opacity-80"
             style={{ background: "var(--color-primary)", color: "#fff" }}
           >
-            careers@outsoor.com
+            careers@Modelsnest.com
             <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>

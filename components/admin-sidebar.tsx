@@ -13,7 +13,7 @@ import {
   LayoutDashboard,
   Receipt
 } from "lucide-react"
-import { OutsoorLogo, OutsoorLogoCompact } from "@/components/outsoor-logo"
+import { ModelsnestLogo, ModelsnestLogoCompact } from "@/components/Modelsnest-logo"
 
 interface AdminSidebarProps {
   user: { name: string; email: string; role: string }
@@ -81,11 +81,11 @@ export function AdminSidebar({ user, onSidebarToggle }: AdminSidebarProps) {
       <div className="flex items-center justify-between p-4 border-b border-[#2d2d32]">
         {!isCollapsed ? (
           <div className="flex items-center gap-2">
-            <OutsoorLogo size="md" variant="sidebar" />
+            <ModelsnestLogo size="md" variant="sidebar" />
             <span className="text-xs font-bold text-[#8C5CF7] border border-[#8C5CF7]/30 bg-[#8C5CF7]/10 px-2 py-0.5 rounded">ADMIN</span>
           </div>
         ) : (
-          <OutsoorLogoCompact />
+          <ModelsnestLogoCompact />
         )}
         
         <Button

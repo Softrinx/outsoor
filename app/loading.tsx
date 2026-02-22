@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { OutsoorLogo } from "@/components/outsoor-logo"
+import { ModelsnestLogo } from "@/components/Modelsnest-logo"
 
 function LottieLoader() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -60,7 +60,7 @@ export default function Loading() {
       className="min-h-screen flex flex-col items-center justify-center gap-8"
       style={{ background: "var(--color-bg)" }}
     >
-      <OutsoorLogo size="xl" variant="header" />
+      <ModelsnestLogo size="xl" variant="header" />
       <LottieLoader />
       <p
         className="text-sm font-mono"

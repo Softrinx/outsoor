@@ -168,7 +168,7 @@ export default function DataProcessingAgreement() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }} className="flex flex-col gap-5">
             <p className="text-lg leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-              This DPA governs how Outsoor processes personal data on behalf of our customers
+              This DPA governs how Modelsnest processes personal data on behalf of our customers
               and forms an integral part of our Terms of Service.
             </p>
             <div className="flex items-center gap-3">
@@ -186,7 +186,7 @@ export default function DataProcessingAgreement() {
           icon={<FileText className="w-4 h-4" />}>
           <PanelGrid>
             <DefCard term='"Controller"' desc="The entity that determines the purposes and means of processing personal data." />
-            <DefCard term='"Processor"' desc="Outsoor, the entity that processes personal data on behalf of the controller." />
+            <DefCard term='"Processor"' desc="Modelsnest, the entity that processes personal data on behalf of the controller." />
             <DefCard term='"Personal Data"' desc="Any information relating to an identified or identifiable natural person." />
             <DefCard term='"Processing"' desc="Any operation performed on personal data, such as collection, storage, or analysis." />
           </PanelGrid>
@@ -195,7 +195,7 @@ export default function DataProcessingAgreement() {
         {/* 02 Scope */}
         <SectionRow num="02" index={1} isInView={isInView} title="Scope & Application"
           icon={<Clock className="w-4 h-4" />}>
-          <p>This DPA applies to all personal data processing activities carried out by Outsoor when providing AI API services to customers. It is automatically incorporated by reference into our Terms of Service.</p>
+          <p>This DPA applies to all personal data processing activities carried out by Modelsnest when providing AI API services to customers. It is automatically incorporated by reference into our Terms of Service.</p>
           <div>
             <SubLabel>Covered Services</SubLabel>
             <div className="flex flex-col gap-2">
@@ -390,9 +390,9 @@ export default function DataProcessingAgreement() {
             <Panel>
               <SubLabel>Primary Contacts</SubLabel>
               <ContactBox rows={[
-                { label: "Legal",      value: "legal@outsoor.com" },
-                { label: "DPO",        value: "dpo@outsoor.com" },
-                { label: "Compliance", value: "compliance@outsoor.com" },
+                { label: "Legal",      value: "legal@Modelsnest.com" },
+                { label: "DPO",        value: "dpo@Modelsnest.com" },
+                { label: "Compliance", value: "compliance@Modelsnest.com" },
               ]} />
             </Panel>
             <Panel>

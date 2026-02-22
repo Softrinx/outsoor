@@ -85,7 +85,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <p className="text-lg leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-              Outsoor is an AI infrastructure platform that gives product teams
+              Modelsnest is an AI infrastructure platform that gives product teams
               low-latency, production-ready APIs for language, vision and retrieval.
               We handle scaling, reliability and billing so you can focus on shipping features.
             </p>
@@ -126,7 +126,7 @@ export default function AboutPage() {
           ))}
         </div>
 
-        {/* What we do + How teams use Outsoor */}
+        {/* What we do + How teams use Modelsnest */}
         <div
           className="grid grid-cols-1 lg:grid-cols-2"
           style={{ borderBottom: "1px solid var(--color-border)" }}
@@ -144,7 +144,7 @@ export default function AboutPage() {
             <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
               Modern products rely on AI for search, support, automation and
               personalization — but wiring all of this together reliably is hard.
-              Outsoor provides a single, consistent API surface on top of
+              Modelsnest provides a single, consistent API surface on top of
               best-in-class models.
             </p>
             <div className="flex flex-col gap-3">
@@ -178,10 +178,10 @@ export default function AboutPage() {
             className="p-10 lg:p-14 flex flex-col gap-6"
           >
             <span className="text-xs uppercase tracking-wider font-semibold" style={{ color: "var(--color-text-muted)" }}>
-              How teams use Outsoor
+              How teams use Modelsnest
             </span>
             <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-              Customers use Outsoor to power AI assistants inside their apps,
+              Customers use Modelsnest to power AI assistants inside their apps,
               automate internal workflows, summarize large volumes of data and
               build custom retrieval pipelines. Our APIs are designed to drop
               into existing stacks without forcing a full rewrite.

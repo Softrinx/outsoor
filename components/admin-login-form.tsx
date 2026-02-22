@@ -10,7 +10,7 @@ import { Lock, Mail, Eye, EyeOff, Loader2 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
 // List of admin emails - must match the one in admin-auth.ts
-const ADMIN_EMAILS = ["admin@outsoor.com"]
+const ADMIN_EMAILS = ["admin@Modelsnest.com"]
 
 export function AdminLoginForm() {
   const [error, setError] = useState<string | null>(null)
@@ -111,7 +111,7 @@ export function AdminLoginForm() {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="admin@outsoor.com"
+                placeholder="admin@Modelsnest.com"
                 required
                 disabled={isLoading}
                 className="bg-[#2d2d32] border-none text-white placeholder:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"

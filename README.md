@@ -1,6 +1,6 @@
-# Outsoor — Enterprise AI API Platform
+# Modelsnest — Enterprise AI API Platform
 
-Outsoor is a production-grade AI API aggregation platform that provides unified access to 50+ AI models (GPT-4, Claude, Llama, DALL-E, Whisper, ElevenLabs, and more) through a single, consistent API interface. The platform is designed for developers and enterprises who need reliable, scalable, cost-transparent AI infrastructure without vendor lock-in.
+Modelsnest is a production-grade AI API aggregation platform that provides unified access to 50+ AI models (GPT-4, Claude, Llama, DALL-E, Whisper, ElevenLabs, and more) through a single, consistent API interface. The platform is designed for developers and enterprises who need reliable, scalable, cost-transparent AI infrastructure without vendor lock-in.
 
 **Core value proposition:** One API key, every AI model, transparent pay-as-you-go pricing at $0.001/1K tokens, with <200ms latency and 99.99% uptime.
 
@@ -23,7 +23,7 @@ Outsoor is a production-grade AI API aggregation platform that provides unified 
 ## Project Structure
 
 ```
-outsoor/
+Modelsnest/
 ├── app/                        # Next.js App Router — all pages and API routes
 │   ├── about/                  # About page
 │   ├── actions/                # Next.js Server Actions
@@ -139,7 +139,7 @@ outsoor/
 │   ├── models-docs-index.tsx           # Index of all available model docs
 │   ├── models-main.tsx                 # Models page main content
 │   ├── notifications-main.tsx          # Notifications page main content
-│   ├── outsoor-logo.tsx                # Outsoor SVG logo component
+│   ├── Modelsnest-logo.tsx                # Modelsnest SVG logo component
 │   ├── paypal-button.tsx               # PayPal payment button
 │   ├── paypal-config-checker.tsx       # Dev tool: validates PayPal configuration
 │   ├── paypal-status-checker.tsx       # Dev tool: checks PayPal connection status

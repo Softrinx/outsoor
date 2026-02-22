@@ -10,7 +10,7 @@ import { Loader2, Mail, Lock, Eye, EyeOff } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 import Link from "next/link"
 
-const ADMIN_EMAILS = ["admin@outsoor.com"]
+const ADMIN_EMAILS = ["admin@Modelsnest.com"]
 
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null)

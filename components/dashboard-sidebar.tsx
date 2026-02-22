@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { createPortal } from "react-dom"
 import { useTheme } from "@/contexts/themeContext"
-import { OutsoorLogo, OutsoorLogoCompact } from "@/components/outsoor-logo"
+import { ModelsnestLogo, ModelsnestLogoCompact } from "@/components/Modelsnest-logo"
 import {
   Bot, Cpu, Plug2, CreditCard, Bell, ShieldCheck, SlidersHorizontal,
   ChevronRight, Menu, X, Plus, Sun, Moon, User, Sparkles,
@@ -242,7 +242,7 @@ function SidebarBody({
         padding: collapsed ? "18px 0" : "16px 16px",
         borderBottom: `1px solid ${border}`, flexShrink: 0,
       }}>
-        {collapsed ? <OutsoorLogoCompact /> : <OutsoorLogo size="md" variant="sidebar" />}
+        {collapsed ? <ModelsnestLogoCompact /> : <ModelsnestLogo size="md" variant="sidebar" />}
         {onClose && (
           <button onClick={onClose}
             style={{ padding:6, borderRadius:8, background:"transparent", border:"none", cursor:"pointer", color: muted }}

@@ -4,7 +4,7 @@ import { createMiddlewareClient } from "@/lib/supabase/middleware"
 import { hasSupabaseEnv } from "@/lib/supabase/env"
 
 // List of admin emails - must match the one in admin-login-form.tsx and admin-auth.ts
-const ADMIN_EMAILS = ["admin@outsoor.com"]
+const ADMIN_EMAILS = ["admin@Modelsnest.com"]
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next({

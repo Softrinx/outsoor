@@ -50,7 +50,7 @@ if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
   console.error('\n2. Create the admin user manually:');
   console.error('   - Go to Supabase Dashboard → Authentication → Users');
   console.error('   - Click "Invite User" or "Add User"');
-  console.error('   - Use email: admin@outsoor.com');
+  console.error('   - Use email: admin@Modelsnest.com');
   console.error('   - Set a password');
   console.error('   - The user will automatically be an admin (based on ADMIN_EMAILS in middleware.ts)');
   process.exit(1);
@@ -68,7 +68,7 @@ const supabase = createClient(
 );
 
 async function createAdminUser() {
-  const email = 'admin@outsoor.com';
+  const email = 'admin@Modelsnest.com';
   const password = 'admin123!@#'; // Change this to a secure password
   const name = 'Admin User';
 

@@ -180,7 +180,7 @@ export default function CompliancePage() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }} className="flex flex-col gap-5">
             <p className="text-lg leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-              Outsoor maintains rigorous compliance across global data protection regulations and
+              Modelsnest maintains rigorous compliance across global data protection regulations and
               industry certifications so your team can build with confidence.
             </p>
             <div className="flex items-center gap-3">
@@ -312,7 +312,7 @@ export default function CompliancePage() {
             <Panel>
               <SubLabel>Request Process</SubLabel>
               <ContactBox rows={[
-                { label: "Email",    value: "compliance@outsoor.com" },
+                { label: "Email",    value: "compliance@Modelsnest.com" },
                 { label: "Response", value: "2–3 business days" },
                 { label: "NDA",      value: "Required for sensitive docs" },
               ]} />
@@ -328,9 +328,9 @@ export default function CompliancePage() {
             <Panel>
               <SubLabel>Primary Contacts</SubLabel>
               <ContactBox rows={[
-                { label: "Compliance", value: "compliance@outsoor.com" },
-                { label: "Legal",      value: "legal@outsoor.com" },
-                { label: "Security",   value: "security@outsoor.com" },
+                { label: "Compliance", value: "compliance@Modelsnest.com" },
+                { label: "Legal",      value: "legal@Modelsnest.com" },
+                { label: "Security",   value: "security@Modelsnest.com" },
               ]} />
             </Panel>
             <Panel>

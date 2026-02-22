@@ -45,7 +45,7 @@ const tracks = [
     rating: 4.9,
     difficulty: "Beginner",
     modules: [
-      { title: "What is Outsoor?", duration: "8 min", done: true },
+      { title: "What is Modelsnest?", duration: "8 min", done: true },
       { title: "Your first API call", duration: "12 min", done: true },
       { title: "Authentication basics", duration: "15 min", done: false },
       { title: "Understanding responses", duration: "10 min", done: false },
@@ -364,7 +364,7 @@ export default function TutorialsPage() {
 
             <h1 className="font-black leading-tight"
               style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", letterSpacing: "-0.04em", color: "var(--color-text)" }}>
-              Learn the Outsoor API.<br />
+              Learn the Modelsnest API.<br />
               <span style={{ color: "var(--color-primary)" }}>Ship faster.</span>
             </h1>
 
@@ -533,7 +533,7 @@ export default function TutorialsPage() {
                 Prove your expertise.
               </h2>
               <p className="text-sm" style={{ color: "var(--color-text-muted)", lineHeight: 1.8 }}>
-                Complete all six tracks and pass the final assessment to earn your Outsoor API Certified Developer credential — shareable on LinkedIn and verifiable by employers.
+                Complete all six tracks and pass the final assessment to earn your Modelsnest API Certified Developer credential — shareable on LinkedIn and verifiable by employers.
               </p>
               <div className="flex items-center gap-6 text-xs font-mono" style={{ color: "var(--color-text-muted)", opacity: 0.5 }}>
                 <span className="flex items-center gap-1"><Users className="w-3 h-3" /> 2,341 certified</span>
@@ -558,7 +558,7 @@ export default function TutorialsPage() {
       <div className="flex items-center justify-between px-6 text-xs font-mono flex-shrink-0"
         style={{ height: "24px", background: "var(--color-primary)", color: "#fff" }}>
         <div className="flex items-center gap-5">
-          <span>Outsoor Tutorials</span>
+          <span>Modelsnest Tutorials</span>
           <span style={{ opacity: 0.7 }}>6 tracks · 47 lessons · 18h content</span>
         </div>
         <div className="flex items-center gap-4" style={{ opacity: 0.8 }}>

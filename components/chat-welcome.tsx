@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react"
 import { Send, Zap, Cpu, Paperclip, Search, Lightbulb, Flame, FileText, Target, Sparkles } from "lucide-react"
-import { OutsoorLogo } from "@/components/outsoor-logo"
+import { ModelsnestLogo } from "@/components/Modelsnest-logo"
 import { useTheme } from "@/contexts/themeContext"
 import type { DashboardUser } from "@/types/dashboard-user"
 
@@ -78,7 +78,7 @@ export function ChatWelcome({ user, onSuggestion, onSendMessage, disabled = fals
 
       {/* Logo */}
       <div style={{ marginBottom: 20 }}>
-        <OutsoorLogo size="xl" />
+        <ModelsnestLogo size="xl" />
       </div>
 
       {/* Headline */}

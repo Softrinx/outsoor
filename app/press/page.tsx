@@ -31,14 +31,14 @@ const contacts = [
     title: "Press contact",
     description:
       "For press inquiries, interviews or quotes, reach out directly. We aim to respond within one business day.",
-    email: "press@outsoor.com",
+    email: "press@Modelsnest.com",
   },
   {
     icon: Palette,
     title: "Brand assets",
     description:
       "We provide logo files and brand guidelines on request. Include your organization name and intended use when reaching out.",
-    email: "brand@outsoor.com",
+    email: "brand@Modelsnest.com",
   },
 ]
 
@@ -95,7 +95,7 @@ export default function PressPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <p className="text-lg leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-              Everything you need to write about Outsoor — fast facts, contact
+              Everything you need to write about Modelsnest — fast facts, contact
               details, brand assets and a short boilerplate for attribution.
             </p>
           </motion.div>
@@ -207,9 +207,9 @@ export default function PressPage() {
               className="text-base lg:text-lg leading-relaxed relative"
               style={{ color: "var(--color-text-muted)", maxWidth: "720px" }}
             >
-              Outsoor is an AI infrastructure platform that gives product teams low-latency,
+              Modelsnest is an AI infrastructure platform that gives product teams low-latency,
               production-ready APIs for language, vision and retrieval. Designed for reliability
-              and simplicity, Outsoor handles scaling, observability and billing so engineering
+              and simplicity, Modelsnest handles scaling, observability and billing so engineering
               teams can focus on shipping features.
             </p>
             <span

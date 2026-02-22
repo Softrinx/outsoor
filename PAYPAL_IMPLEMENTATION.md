@@ -1,6 +1,6 @@
 # PayPal Payment Implementation
 
-This document describes the complete PayPal payment system implementation for the Outsoor application.
+This document describes the complete PayPal payment system implementation for the Modelsnest application.
 
 ## Features
 
@@ -35,7 +35,7 @@ PAYPAL_WEBHOOK_ID_SANDBOX=your_sandbox_webhook_id
 PAYPAL_WEBHOOK_ID_LIVE=your_live_webhook_id
 
 # App URL for PayPal redirects
-NEXT_PUBLIC_APP_URL=https://outsoor.com  # or your production URL
+NEXT_PUBLIC_APP_URL=https://Modelsnest.com  # or your production URL
 ```
 
 ### Environment Switching

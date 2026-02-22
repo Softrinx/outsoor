@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic"
 export const metadata: Metadata = {
   title: "Dashboard",
   description:
-    "Manage your AI APIs, monitor usage, and access developer tools in your Outsoor dashboard.",
+    "Manage your AI APIs, monitor usage, and access developer tools in your Modelsnest dashboard.",
   robots: {
     index: false,
     follow: false,

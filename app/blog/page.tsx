@@ -10,10 +10,10 @@ import { PageTopBar } from "@/components/page-top-bar"
 const posts = [
   {
     tag: "Product · Infrastructure",
-    title: "Launching Outsoor: AI infrastructure you can trust in production",
+    title: "Launching Modelsnest: AI infrastructure you can trust in production",
     date: "May 2025",
     excerpt:
-      'We built Outsoor after spending years maintaining brittle, home-grown AI stacks. In this post we share what "enterprise-grade" means to us and how we think about reliability, latency and cost.',
+      'We built Modelsnest after spending years maintaining brittle, home-grown AI stacks. In this post we share what "enterprise-grade" means to us and how we think about reliability, latency and cost.',
     featured: true,
   },
   {
@@ -21,12 +21,12 @@ const posts = [
     title: "Designing a fault-tolerant AI feature in under an hour",
     date: "April 2025",
     excerpt:
-      "A step-by-step walkthrough of how to go from idea to production for a simple AI-powered feature, using Outsoor APIs, observability and built-in safeguards.",
+      "A step-by-step walkthrough of how to go from idea to production for a simple AI-powered feature, using Modelsnest APIs, observability and built-in safeguards.",
     featured: false,
   },
   {
     tag: "Customers · Stories",
-    title: "How teams reduce incident load with Outsoor",
+    title: "How teams reduce incident load with Modelsnest",
     date: "March 2025",
     excerpt:
       "Teams are replacing ad-hoc scripts and one-off model calls with a managed platform. We share patterns we see across customers and what works well in production.",
@@ -117,7 +117,7 @@ export default function BlogPage() {
                   backgroundClip: "text",
                 }}
               >
-                Outsoor
+                Modelsnest
               </span>{" "}
               Blog
             </h1>
@@ -130,7 +130,7 @@ export default function BlogPage() {
           >
             <p className="text-lg leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
               Product updates, infrastructure deep-dives, and examples of how
-              teams are using Outsoor in production.
+              teams are using Modelsnest in production.
             </p>
           </motion.div>
         </div>

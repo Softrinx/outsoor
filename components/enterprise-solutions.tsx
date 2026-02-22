@@ -253,7 +253,7 @@ export function EnterpriseSolutions() {
               Fortune 500 trusted
             </p>
             <p className="text-lg leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-              Join enterprises worldwide running mission-critical AI on Outsoor. Dedicated infra, custom contracts, zero compromise.
+              Join enterprises worldwide running mission-critical AI on Modelsnest. Dedicated infra, custom contracts, zero compromise.
             </p>
             <Link href="/demo">
               <button

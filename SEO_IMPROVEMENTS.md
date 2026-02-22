@@ -1,11 +1,11 @@
-# SEO Improvements for Outsoor
+# SEO Improvements for Modelsnest
 
 This document outlines all the SEO improvements implemented to enhance the site's search engine optimization and user experience.
 
 ## 🎯 Core SEO Enhancements
 
 ### 1. Comprehensive Metadata
-- **Dynamic Titles**: Implemented template-based titles with `%s | Outsoor` format
+- **Dynamic Titles**: Implemented template-based titles with `%s | Modelsnest` format
 - **Rich Descriptions**: Added compelling, keyword-rich descriptions for all pages
 - **Targeted Keywords**: Strategic keyword placement for AI APIs, Enterprise AI, and related terms
 - **Author & Publisher**: Proper attribution and brand identification
@@ -25,7 +25,7 @@ This document outlines all the SEO improvements implemented to enhance the site'
 ## 📱 PWA & Mobile Optimization
 
 ### 1. Web App Manifest
-- **App Name**: "Outsoor - Enterprise AI APIs"
+- **App Name**: "Modelsnest - Enterprise AI APIs"
 - **Theme Colors**: Brand-consistent color scheme (#8C5CF7)
 - **Icons**: Multiple icon sizes for different devices
 - **Display Mode**: Standalone app experience

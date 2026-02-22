@@ -87,7 +87,7 @@ export function VisionSection() {
                 maxWidth: "32rem",
               }}
             >
-              We believe artificial intelligence should be a force multiplier for every developer, startup, and enterprise. Outsoor breaks down barriers with unified APIs, transparent pricing, and infrastructure that scales from your first API call to billions.
+              We believe artificial intelligence should be a force multiplier for every developer, startup, and enterprise. Modelsnest breaks down barriers with unified APIs, transparent pricing, and infrastructure that scales from your first API call to billions.
             </p>
 
             <div

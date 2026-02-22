@@ -268,9 +268,9 @@ export default function SecurityPage() {
           icon={<Mail className="w-4 h-4" />}>
           <p>For security-related inquiries, vulnerability reports, or responsible disclosure, please contact our security team:</p>
           <ContactBox rows={[
-            { label: "Email",      value: "security@outsoor.com" },
+            { label: "Email",      value: "security@Modelsnest.com" },
             { label: "Response",   value: "Within 24 hours" },
-            { label: "Bug Bounty", value: "outsoor.com/security/bounty" },
+            { label: "Bug Bounty", value: "Modelsnest.com/security/bounty" },
           ]} />
           <div className="p-5 text-sm leading-relaxed"
             style={{ border: "1px solid color-mix(in srgb, var(--color-success) 30%, transparent)", background: "color-mix(in srgb, var(--color-success) 5%, transparent)", color: "var(--color-text-muted)" }}>

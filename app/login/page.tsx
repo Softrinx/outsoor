@@ -1,7 +1,7 @@
 "use client"
 
 import { LoginForm } from "@/components/login-form"
-import { OutsoorLogo } from "@/components/outsoor-logo"
+import { ModelsnestLogo } from "@/components/Modelsnest-logo"
 import Link from "next/link"
 import { Brain, Zap, Shield, Globe, Code, Sparkles, Sun, Moon, Check } from "lucide-react"
 import { useTheme } from "@/contexts/themeContext"
@@ -88,7 +88,7 @@ export default function LoginPage() {
       {/* ── MOBILE ── */}
       <div className="lg:hidden relative z-10 min-h-screen flex flex-col">
         <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: `1px solid ${border}` }}>
-          <Link href="/"><OutsoorLogo className="h-8 w-auto" /></Link>
+          <Link href="/"><ModelsnestLogo className="h-8 w-auto" /></Link>
           <div className="flex items-center gap-3">
             {/* Animated theme toggle */}
             <motion.button
@@ -193,7 +193,7 @@ export default function LoginPage() {
 
               {/* LEFT */}
               <div className="space-y-8">
-                <Link href="/"><OutsoorLogo className="h-10 w-auto" /></Link>
+                <Link href="/"><ModelsnestLogo className="h-10 w-auto" /></Link>
 
                 <div className="space-y-3">
                   <h1 className="text-5xl font-black leading-tight" style={{ letterSpacing: "-0.04em", color: text }}>

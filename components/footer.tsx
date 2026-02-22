@@ -4,7 +4,7 @@ import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 import Link from "next/link"
 import { useTheme } from "@/contexts/themeContext"
-import { OutsoorLogo } from "@/components/outsoor-logo"
+import { ModelsnestLogo } from "@/components/Modelsnest-logo"
 import { Twitter, Github, Linkedin, Youtube, MessageCircle } from "lucide-react"
 
 const sections = [
@@ -111,7 +111,7 @@ export function Footer() {
             userSelect: "none",
           }}
         >
-          OUTSOOR
+          Modelsnest
         </motion.div>
       </div>
 
@@ -130,7 +130,7 @@ export function Footer() {
             className="lg:col-span-2 flex flex-col gap-8 py-14 pr-12"
             style={{ borderRight: "1px solid var(--color-border)" }}
           >
-            <OutsoorLogo />
+            <ModelsnestLogo />
 
             <p
               className="text-sm leading-relaxed max-w-xs"
@@ -213,7 +213,7 @@ export function Footer() {
           className="flex flex-col md:flex-row items-center justify-between gap-4 py-6"
         >
           <span className="text-xs font-mono" style={{ color: "var(--color-text-muted)", opacity: 0.5 }}>
-            © 2025 Outsoor. All rights reserved.
+            © 2025 Modelsnest. All rights reserved.
           </span>
 
           <div className="flex items-center gap-6">

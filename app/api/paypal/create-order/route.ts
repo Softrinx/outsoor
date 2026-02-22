@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       applicationContext: {
         returnUrl: `${appUrl}/api/paypal/return`,
         cancelUrl: `${appUrl}/dashboard/billing#cancelled`,
-        brandName: 'Outsoor',
+        brandName: 'Modelsnest',
         landingPage: 'BILLING',
         userAction: 'PAY_NOW',
         shippingPreference: 'NO_SHIPPING'

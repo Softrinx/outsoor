@@ -7,7 +7,7 @@ import type { LucideIcon } from "lucide-react"
 export function CompetitiveEdge() {
   const competitors = [
     {
-      name: "Outsoor",
+      name: "Modelsnest",
       logo: "🚀",
       isOurs: true,
       features: {
@@ -73,7 +73,7 @@ export function CompetitiveEdge() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-6xl font-bold font-space mb-6 text-white">
-            Why Developers Choose <span className="bg-gradient-to-r from-[#8C5CF7] via-[#C85CFA] to-[#5567F7] bg-clip-text text-transparent">Outsoor</span>
+            Why Developers Choose <span className="bg-gradient-to-r from-[#8C5CF7] via-[#C85CFA] to-[#5567F7] bg-clip-text text-transparent">Modelsnest</span>
           </h2>
           <p className="text-xl text-[#A0A0A8] max-w-3xl mx-auto">
             See how we stack up against the competition. Better performance, better pricing, better developer

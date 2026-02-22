@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 
 // List of admin emails - update this to add more admins
-const ADMIN_EMAILS = ["admin@outsoor.com"]
+const ADMIN_EMAILS = ["admin@Modelsnest.com"]
 
 export async function adminLogin(prevState: any, formData: FormData) {
   const email = formData.get("email") as string

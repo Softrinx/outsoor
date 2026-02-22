@@ -8,13 +8,13 @@ const steps = [
   {
     number: "01",
     label: "Install",
-    command: "pip install outsoor",
+    command: "pip install Modelsnest",
     lang: "bash",
   },
   {
     number: "02",
     label: "Initialize",
-    command: `import outsoor\nclient = outsoor.Client("your-api-key")`,
+    command: `import Modelsnest\nclient = Modelsnest.Client("your-api-key")`,
     lang: "python",
   },
   {

@@ -13,7 +13,7 @@ const sections = [
     title: "Introduction",
     content: (
       <p>
-        Outsoor ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy
+        Modelsnest ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy
         explains how we collect, use, disclose, and safeguard your information when you use our AI API services.
       </p>
     ),
@@ -124,7 +124,7 @@ const sections = [
           style={{ border: "1px solid var(--color-border)" }}
         >
           {[
-            { label: "Email", value: "privacy@outsoor.com" },
+            { label: "Email", value: "privacy@Modelsnest.com" },
             { label: "Address", value: "Nairobi, Kenya" },
           ].map((row) => (
             <div key={row.label} className="flex items-center gap-3">

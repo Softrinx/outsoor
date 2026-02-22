@@ -83,7 +83,7 @@ export function GlobalClients() {
             className="text-lg leading-relaxed"
             style={{ color: "var(--color-text-muted)" }}
           >
-            From solo developers to Fortune 500 enterprises — Outsoor powers AI infrastructure across 140+ countries with zero compromise on performance or reliability.
+            From solo developers to Fortune 500 enterprises — Modelsnest powers AI infrastructure across 140+ countries with zero compromise on performance or reliability.
           </motion.p>
         </div>
 
@@ -199,7 +199,7 @@ export function GlobalClients() {
               className="absolute bottom-4 left-5 text-xs font-mono"
               style={{ color: "var(--color-text-muted)", opacity: 0.5 }}
             >
-              outsoor / infrastructure / global
+              Modelsnest / infrastructure / global
             </div>
           </motion.div>
 
@@ -254,7 +254,7 @@ export function GlobalClients() {
               className="text-lg font-medium leading-relaxed"
               style={{ color: "var(--color-text)" }}
             >
-              Outsoor reduced our AI infrastructure costs by 60% while improving response times by 3×.
+              Modelsnest reduced our AI infrastructure costs by 60% while improving response times by 3×.
             </p>
             <div className="flex flex-col gap-0.5 mt-auto">
               <span className="text-sm font-bold" style={{ color: "var(--color-text)" }}>Sarah Chen</span>
@@ -264,7 +264,7 @@ export function GlobalClients() {
 
           <div className="p-10 flex flex-col justify-between gap-8">
             <p className="text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-              Join thousands of teams running production AI on Outsoor. Start free, scale to enterprise when you're ready.
+              Join thousands of teams running production AI on Modelsnest. Start free, scale to enterprise when you're ready.
             </p>
             <div className="flex items-center gap-4">
               <a href="/signup">
