@@ -103,18 +103,17 @@ export function NotificationsMain({ user }: NotificationsMainProps) {
   const toggleNotification = async (category: string, subcategory: string) => {
     setSaveMessage(null)
 
-    let nextValue = false
-    setNotifications(prev => {
-      const current = (prev[category as keyof typeof prev] as any)[subcategory]
-      nextValue = !current
-      return {
-        ...prev,
-        [category]: {
-          ...prev[category as keyof typeof prev],
-          [subcategory]: nextValue
-        }
+    // Compute next value from current state
+    const current = (notifications[category as keyof typeof notifications] as any)[subcategory]
+    const nextValue = !current
+
+    setNotifications(prev => ({
+      ...prev,
+      [category]: {
+        ...prev[category as keyof typeof prev],
+        [subcategory]: nextValue
       }
-    })
+    }))
 
     const profileFieldMap: Record<string, Record<string, string>> = {
       email: {
